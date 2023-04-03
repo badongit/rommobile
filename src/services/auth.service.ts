@@ -1,0 +1,19 @@
+import {LoginForm} from '../types/auth/login-form.type';
+import {RefreshTokenForm} from '../types/auth/refresh-token-form.type';
+import api from './api';
+
+const AUTH_URL_PREFIX = '/auth';
+export const authService = {
+  login: (params: LoginForm) => {
+    const url = AUTH_URL_PREFIX + '/login';
+    return api.post(url, params);
+  },
+  refreshToken: (params: RefreshTokenForm) => {
+    const url = AUTH_URL_PREFIX + '/token';
+    return api.post(url, params);
+  },
+  getMe: () => {
+    const url = AUTH_URL_PREFIX + '/me';
+    return api.get(url);
+  },
+};
