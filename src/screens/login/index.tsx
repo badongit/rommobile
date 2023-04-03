@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import {
   Button,
   Box,
@@ -8,30 +8,46 @@ import {
   Icon,
   Pressable,
   VStack,
+  Spinner,
+  HStack,
+  Text,
 } from 'native-base';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import InputControl from 'src/components/InputControl';
 import { LoginForm } from 'src/types/auth/login-form.type';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { useAuth } from 'src/hooks/useAuth';
+import { authService } from 'src/services/auth.service';
 
 // type Inputs = {
 //   value: string;
 //   // exampleRequired: string,
 // };
 function LoginScreen(props: any) {
-  const { navigation } = props;
   const [showPass, setShowPass] = useState(false);
+  const { actions, isLoading } = useAuth();
+  const { ...methods } = useForm<LoginForm>({ mode: 'onChange' });
 
-  const { ...methods } = useForm<LoginForm>();
-
-  const onSubmit: SubmitHandler<LoginForm> = (data: any) => {
-    console.log('🚀 ~ file: index.tsx:57 ~ LoginScreen ~ data:', data);
+  const onSubmit: SubmitHandler<LoginForm> = async (data: LoginForm) => {
+    // actions.login(
+    //   data,
+    //   (response: any) => {
+    //     console.log(
+    //       '🚀 ~ file: index.tsx:33 ~ LoginScreen ~ response:',
+    //       response,
+    //     );
+    //   },
+    //   (error: any) => {
+    //     console.log('🚀 ~ file: index.tsx:38 ~ LoginScreen ~ error:', error);
+    //   },
+    // );
+    const response = await authService.login(data);
+    console.log(
+      '🚀 ~ file: index.tsx:46 ~ constonSubmit:SubmitHandler<LoginForm>= ~ response:',
+      response,
+    );
   };
-
-  function onChange(event: any): void {
-    console.log('🚀 ~ file: index.tsx:33 ~ onChange ~ event:', event);
-  }
 
   return (
     <SafeAreaView>
@@ -44,15 +60,12 @@ function LoginScreen(props: any) {
           py="5">
           Đăng nhập
         </Heading>
-        {/* <Button
-          title="Intro"
-          onPress={() => navigation.navigate('INTRO_SCREEN')}
-        /> */}
-        <VStack w="80%" space={4}>
-          <FormProvider {...methods}>
+        <FormProvider {...methods}>
+          <VStack w="80%" space={4}>
             <InputControl
               name="phoneNumber"
               placeholder="Số điện thoại"
+              rules={{ required: 'Số điện thoại là bắt buộc' }}
               InputRightElement={
                 <Icon
                   as={<AntDesign name="user" size={24} color="black" />}
@@ -65,7 +78,7 @@ function LoginScreen(props: any) {
               name="password"
               type={showPass ? 'text' : 'password'}
               placeholder="Mật khẩu"
-              onChange={onChange}
+              rules={{ required: 'Mật khẩu là bắt buộc' }}
               InputRightElement={
                 <Pressable onPress={() => setShowPass(!showPass)}>
                   <Icon
@@ -81,9 +94,16 @@ function LoginScreen(props: any) {
                 </Pressable>
               }
             />
-            <Button onPress={methods.handleSubmit(onSubmit)}>Đăng nhập</Button>
-          </FormProvider>
-        </VStack>
+            <Button
+              disabled={isLoading}
+              onPress={methods.handleSubmit(onSubmit)}>
+              <HStack space={2}>
+                {isLoading && <Spinner color="light.50" />}
+                <Text color="light.50">ĐĂNG NHẬP</Text>
+              </HStack>
+            </Button>
+          </VStack>
+        </FormProvider>
       </Center>
     </SafeAreaView>
   );

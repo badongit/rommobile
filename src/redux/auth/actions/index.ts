@@ -15,8 +15,8 @@ export const GET_ME_FAILED = 'GET_ME_FAILED';
 
 export function login(
   payload: LoginForm,
-  onSuccess: Function,
-  onError: Function,
+  onSuccess?: Function,
+  onError?: Function,
 ) {
   return {
     type: LOGIN_START,

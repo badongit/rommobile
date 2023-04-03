@@ -5,35 +5,21 @@
  * @format
  */
 
+import type { PropsWithChildren } from 'react';
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { StyleSheet, Text, useColorScheme, View } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import {Provider} from 'react-redux/es/exports';
-import store from './src/redux/store';
+import { NativeBaseProvider } from 'native-base';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { Provider } from 'react-redux';
 import MyNavigateContainer from './src/layouts/navigation-container';
-import {NativeBaseProvider} from 'native-base';
+import store from './src/redux/store';
 
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
-function Section({children, title}: SectionProps): JSX.Element {
+function Section({ children, title }: SectionProps): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>

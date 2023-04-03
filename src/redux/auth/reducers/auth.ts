@@ -12,10 +12,10 @@ import {
 
 const initialState = {
   isLoading: false,
-  useInfo: {},
+  userInfo: {},
 };
 
-export default function authSlice(state = initialState, action: any) {
+export default function auth(state = initialState, action: any) {
   switch (action.type) {
     case LOGIN_START:
     case LOGOUT_START:

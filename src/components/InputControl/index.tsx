@@ -1,44 +1,32 @@
-import {
-  Input,
-  Box,
-  FormControl,
-  Stack,
-  WarningOutlineIcon,
-} from 'native-base';
+import { Input, Stack, Text, WarningOutlineIcon } from 'native-base';
+import { useController, useFormContext } from 'react-hook-form';
 
 const InputControl = (props: any) => {
-  const { isRequired, label, helperText } = props;
+  const formContext = useFormContext();
+  const { formState, getFieldState } = formContext;
+  const { name, rules, defaultValue, label, ...inputProps } = props;
+  const { invalid, error, isTouched } = getFieldState(name, formState);
+  const { field } = useController({ name, rules, defaultValue });
+
   return (
-    <FormControl isRequired={isRequired ?? false}>
-      <Stack mx={4}>
-        {label ?? <FormControl.Label>{label}</FormControl.Label>}
-        <Input
-          _light={{
-            bg: 'coolGray.100',
-            _hover: {
-              bg: 'coolGray.200',
-            },
-            _focus: {
-              bg: 'coolGray.200:alpha.70',
-            },
-          }}
-          _dark={{
-            bg: 'coolGray.800',
-            _hover: {
-              bg: 'coolGray.900',
-            },
-            _focus: {
-              bg: 'coolGray.900:alpha.70',
-            },
-          }}
-          shadow={2}
-          {...props}
-        />
-        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-          {helperText}haha
-        </FormControl.ErrorMessage>
-      </Stack>
-    </FormControl>
+    <Stack mx={4}>
+      {label && <Text>{label}</Text>}
+      <Input
+        defaultValue={defaultValue}
+        name={name}
+        onChangeText={field.onChange}
+        onBlur={field.onBlur}
+        value={field.value}
+        // shadow={1}
+        rules={rules}
+        {...inputProps}
+      />
+      {invalid && isTouched && (
+        <Text color="error.500" fontSize="xs">
+          <WarningOutlineIcon color="error.500" size="xs" /> {error?.message}
+        </Text>
+      )}
+    </Stack>
   );
 };
 
