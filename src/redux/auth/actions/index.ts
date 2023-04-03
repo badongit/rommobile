@@ -1,6 +1,6 @@
-import {LoginForm} from '../../../types/auth/login-form.type';
-import {LoginResponse} from '../../../types/auth/login-response.type';
-import {DetailEmployee} from '../../../types/employee/detail-employee.type';
+import { LoginForm } from 'src/types/auth/login-form.type';
+import { LoginResponse } from 'src/types/auth/login-response.type';
+import { DetailEmployee } from 'src/types/employee/detail-employee.type';
 
 export const LOGIN_START = 'LOGIN_START';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -34,7 +34,7 @@ export function loginSuccess(payload: LoginResponse) {
 }
 
 export function loginFailed() {
-  return {type: LOGIN_FAILED};
+  return { type: LOGIN_FAILED };
 }
 
 export function logout(onSuccess?: Function, onError?: Function) {
@@ -46,11 +46,11 @@ export function logout(onSuccess?: Function, onError?: Function) {
 }
 
 export function logoutSuccess() {
-  return {type: LOGOUT_SUCCESS};
+  return { type: LOGOUT_SUCCESS };
 }
 
 export function logoutFailed() {
-  return {type: LOGOUT_FAILED};
+  return { type: LOGOUT_FAILED };
 }
 
 export function getMe(onSuccess: Function, onError: Function) {
@@ -69,7 +69,7 @@ export function getMeSuccess(payload: DetailEmployee) {
 }
 
 export function getMeFailed() {
-  return {type: GET_ME_FAILED};
+  return { type: GET_ME_FAILED };
 }
 
 const authActions = {

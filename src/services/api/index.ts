@@ -1,7 +1,7 @@
-import {TOKEN_KEY} from '../../constants/common';
-import {validateStatus} from '../../utils/common';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios, {AxiosInstance} from 'axios';
+import axios, { AxiosInstance } from 'axios';
+import { TOKEN_KEY } from 'src/constants/common';
+import { validateStatus } from 'src/utils/common';
 
 const BASE_URL = process.env.REACT_APP_HOST + '/api';
 const HEADERS_MULTIPLE_PART = {
@@ -45,7 +45,7 @@ export const createInstance = (baseURL: string) => {
     },
     async function (error) {
       const response = error.response;
-      const {config} = response;
+      const { config } = response;
       const refreshToken = await AsyncStorage.getItem('refreshToken');
 
       if (

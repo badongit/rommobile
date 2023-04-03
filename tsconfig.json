@@ -1,12 +1,14 @@
+// prettier-ignore
 {
-  "extends": "@tsconfig/react-native/tsconfig.json",
+  "extends": "@tsconfig/react-native/tsconfig.json",     /* Recommended React Native TSConfig base */
   "compilerOptions": {
     "target": "es6",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      // "screens/*": ["src/screens/*"],
+      "src/*": ["src/*"]
     },
-    "types": ["node"]
+    "types": ["node"],
   },
   "exclude": ["node_modules"]
 }

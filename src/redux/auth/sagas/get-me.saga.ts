@@ -1,7 +1,7 @@
-import {authService} from '../../../services/auth.service';
-import {ResponsePayload} from '../../../types/common';
-import {call, put, takeLatest} from 'redux-saga/effects';
-import {getMeFailed, getMeSuccess, GET_ME_START} from '../actions';
+import { call, put, takeLatest } from 'redux-saga/effects';
+import { authService } from 'src/services/auth.service';
+import { ResponsePayload } from 'src/types/common';
+import { getMeFailed, getMeSuccess, GET_ME_START } from '../actions';
 
 function* doGetMe(action: any) {
   try {

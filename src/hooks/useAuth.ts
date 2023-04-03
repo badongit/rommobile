@@ -1,8 +1,8 @@
-import authActions from '../redux/auth/actions';
-import {useMemo} from 'react';
-import {useSelector} from 'react-redux';
-import {useDispatch} from 'react-redux/es/exports';
-import {bindActionCreators} from 'redux';
+import authActions from 'src/redux/auth/actions';
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux/es/exports';
+import { bindActionCreators } from 'redux';
 
 export const useAuth = () => {
   const isLoading = useSelector((state: any) => state.auth.isLoading);

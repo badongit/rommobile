@@ -1,9 +1,9 @@
-import {authService} from '../../../services/auth.service';
-import {call, put, takeLatest} from 'redux-saga/effects';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {REFRESH_TOKEN_KEY, TOKEN_KEY} from '../../../constants/common';
-import {ResponsePayload} from '../../../types/common';
-import {loginFailed, loginSuccess, LOGIN_START} from '../actions';
+import { call, put, takeLatest } from 'redux-saga/effects';
+import { REFRESH_TOKEN_KEY, TOKEN_KEY } from 'src/constants/common';
+import { authService } from 'src/services/auth.service';
+import { ResponsePayload } from 'src/types/common';
+import { loginFailed, loginSuccess, LOGIN_START } from '../actions';
 
 function* doLogin(action: any) {
   try {
@@ -11,7 +11,7 @@ function* doLogin(action: any) {
       authService.login(action?.payload),
     );
     if (response.statusCode === 200) {
-      const {data} = response;
+      const { data } = response;
       yield call(async () => {
         await AsyncStorage.setItem(TOKEN_KEY, data.accessToken);
         await AsyncStorage.setItem(REFRESH_TOKEN_KEY, data.refreshToken);

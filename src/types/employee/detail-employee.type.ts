@@ -1,5 +1,5 @@
-import {EmployeeStatusEnum} from '../../constants/auth/enums';
-import {Role} from '../role/role.type';
+import { EmployeeStatusEnum } from 'src/constants/auth/enums';
+import { Role } from '../role/role.type';
 
 export type DetailEmployee = {
   id: number;

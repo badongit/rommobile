@@ -1,4 +1,3 @@
-import {combineReducers} from 'redux';
 import {
   GET_ME_FAILED,
   GET_ME_START,
@@ -9,7 +8,7 @@ import {
   LOGOUT_FAILED,
   LOGOUT_START,
   LOGOUT_SUCCESS,
-} from '../actions';
+} from 'src/redux/auth/actions';
 
 const initialState = {
   isLoading: false,

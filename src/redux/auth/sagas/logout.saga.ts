@@ -1,7 +1,7 @@
-import {REFRESH_TOKEN_KEY, TOKEN_KEY} from '../../../constants/common';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {call, put, takeLatest} from 'redux-saga/effects';
-import {logoutFailed, logoutSuccess, LOGOUT_START} from '../actions';
+import { call, put, takeLatest } from 'redux-saga/effects';
+import { REFRESH_TOKEN_KEY, TOKEN_KEY } from 'src/constants/common';
+import { logoutFailed, logoutSuccess, LOGOUT_START } from '../actions';
 
 function* doLogout(action: any) {
   try {
