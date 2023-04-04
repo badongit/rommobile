@@ -1,5 +1,4 @@
 import {
-  Button,
   Center,
   Heading,
   HStack,
@@ -14,9 +13,10 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { SafeAreaView } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Button from 'src/components/Button';
 import { DismissKeyboardView } from 'src/components/DismissKeyboardView';
 import InputControl from 'src/components/InputControl';
-import { INTRO_SCREEN } from 'src/constants/navigate';
+import { DASHBOARD_SCREEN, INTRO_SCREEN } from 'src/constants/navigate';
 import { useAuth } from 'src/hooks/useAuth';
 import { ILoginForm } from 'src/types/auth/login-form.type';
 
@@ -27,15 +27,17 @@ function LoginScreen(props: any) {
   const { ...methods } = useForm<ILoginForm>({ mode: 'onChange' });
 
   const onSubmit: SubmitHandler<ILoginForm> = async (data: ILoginForm) => {
-    actions.login(
-      data,
-      () => {
-        navigation.navigate(INTRO_SCREEN);
-      },
-      (error: any) => {
-        methods.setError('phoneNumber', { message: error?.message });
-      },
-    );
+    if (data.phoneNumber && data.password) {
+      actions.login(
+        data,
+        () => {
+          navigation.navigate(DASHBOARD_SCREEN);
+        },
+        (error: any) => {
+          methods.setError('phoneNumber', { message: error?.message });
+        },
+      );
+    }
   };
 
   return (
@@ -54,7 +56,6 @@ function LoginScreen(props: any) {
             <InputControl
               name="phoneNumber"
               placeholder="Số điện thoại"
-              rules={{ required: 'Số điện thoại là bắt buộc' }}
               InputRightElement={
                 <Icon
                   as={<AntDesign name="user" size={24} color="black" />}
@@ -67,7 +68,6 @@ function LoginScreen(props: any) {
               name="password"
               type={showPass ? 'text' : 'password'}
               placeholder="Mật khẩu"
-              rules={{ required: 'Mật khẩu là bắt buộc' }}
               InputRightElement={
                 <Pressable onPress={() => setShowPass(!showPass)}>
                   <Icon
@@ -84,13 +84,12 @@ function LoginScreen(props: any) {
               }
             />
             <Button
+              mx="4"
               disabled={isLoading}
-              onPress={methods.handleSubmit(onSubmit)}>
-              <HStack space={2}>
-                {isLoading && <Spinner color="light.50" />}
-                <Text color="light.50">ĐĂNG NHẬP</Text>
-              </HStack>
-            </Button>
+              onPress={methods.handleSubmit(onSubmit)}
+              title="ĐĂNG NHẬP"
+              leftIcon={isLoading && <Spinner color="light.50" />}
+            />
           </VStack>
         </FormProvider>
       </Center>

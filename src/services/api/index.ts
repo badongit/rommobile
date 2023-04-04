@@ -3,7 +3,7 @@ import axios, { AxiosInstance } from 'axios';
 import { TOKEN_KEY } from 'src/constants/common';
 import { validateStatus } from 'src/utils/common';
 
-const BASE_URL = 'http://192.168.18.1:3001' + '/api';
+const BASE_URL = 'http://193.168.17.189:3001/api';
 const HEADERS_MULTIPLE_PART = {
   'Content-Type': 'multipart/form-data; boundary=something',
 };
@@ -49,7 +49,7 @@ export const createInstance = (baseURL: string) => {
       const refreshToken = await AsyncStorage.getItem('refreshToken');
 
       if (
-        // response.status === 403 &&
+        response.status === 403 &&
         config &&
         (config.retry || 0) <= ATTEMPT_RETRY &&
         config.url !== REFRESH_TOKEN_URL &&
@@ -64,7 +64,7 @@ export const createInstance = (baseURL: string) => {
           await AsyncStorage.setItem(TOKEN_KEY, response.data.accessToken);
         }
         return instance(config);
-      } else if (response.status === 401) {
+      } else if (response?.status === 401) {
         await startLogout();
       } else {
         return Promise.reject(error);
