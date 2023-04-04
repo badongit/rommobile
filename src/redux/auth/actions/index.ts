@@ -1,6 +1,6 @@
-import { LoginForm } from 'src/types/auth/login-form.type';
-import { LoginResponse } from 'src/types/auth/login-response.type';
-import { DetailEmployee } from 'src/types/employee/detail-employee.type';
+import { ILoginForm } from 'src/types/auth/login-form.type';
+import { ILoginResponse } from 'src/types/auth/login-response.type';
+import { IDetailEmployee } from 'src/types/employee/detail-employee.type';
 
 export const LOGIN_START = 'LOGIN_START';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -14,7 +14,7 @@ export const GET_ME_SUCCESS = 'GET_ME_SUCCESS';
 export const GET_ME_FAILED = 'GET_ME_FAILED';
 
 export function login(
-  payload: LoginForm,
+  payload: ILoginForm,
   onSuccess?: Function,
   onError?: Function,
 ) {
@@ -26,7 +26,7 @@ export function login(
   };
 }
 
-export function loginSuccess(payload: LoginResponse) {
+export function loginSuccess(payload: ILoginResponse) {
   return {
     type: LOGIN_SUCCESS,
     payload: payload,
@@ -61,7 +61,7 @@ export function getMe(onSuccess: Function, onError: Function) {
   };
 }
 
-export function getMeSuccess(payload: DetailEmployee) {
+export function getMeSuccess(payload: IDetailEmployee) {
   return {
     type: GET_ME_SUCCESS,
     payload: payload,

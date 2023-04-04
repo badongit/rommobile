@@ -1,4 +1,4 @@
-import {all} from 'axios';
+import { all } from 'redux-saga/effects';
 import watchGetMe from './get-me.saga';
 import watchLogin from './login.saga';
 import watchLogout from './logout.saga';

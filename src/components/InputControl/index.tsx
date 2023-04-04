@@ -1,4 +1,5 @@
 import { Input, Stack, Text, WarningOutlineIcon } from 'native-base';
+import { useEffect } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
 const InputControl = (props: any) => {
@@ -17,7 +18,6 @@ const InputControl = (props: any) => {
         onChangeText={field.onChange}
         onBlur={field.onBlur}
         value={field.value}
-        // shadow={1}
         rules={rules}
         {...inputProps}
       />

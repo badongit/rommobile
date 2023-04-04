@@ -17,7 +17,7 @@ function* doLogin(action: any) {
         await AsyncStorage.setItem(REFRESH_TOKEN_KEY, data.refreshToken);
       });
 
-      yield put(loginSuccess(data));
+      yield put(loginSuccess(data.user));
 
       if (action.onSuccess) {
         yield action.onSuccess(data);

@@ -1,14 +1,14 @@
-import {LoginForm} from '../types/auth/login-form.type';
-import {RefreshTokenForm} from '../types/auth/refresh-token-form.type';
+import { ILoginForm } from '../types/auth/login-form.type';
+import { IRefreshTokenForm } from '../types/auth/refresh-token-form.type';
 import api from './api';
 
 const AUTH_URL_PREFIX = '/auth';
 export const authService = {
-  login: (params: LoginForm) => {
+  login: (params: ILoginForm) => {
     const url = AUTH_URL_PREFIX + '/login';
     return api.post(url, params);
   },
-  refreshToken: (params: RefreshTokenForm) => {
+  refreshToken: (params: IRefreshTokenForm) => {
     const url = AUTH_URL_PREFIX + '/token';
     return api.post(url, params);
   },

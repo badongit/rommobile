@@ -28,6 +28,7 @@ export default function auth(state = initialState, action: any) {
       return {
         ...state,
         isLoading: false,
+        userInfo: action.payload,
       };
     case LOGOUT_SUCCESS:
       return {

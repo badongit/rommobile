@@ -1,7 +1,7 @@
 import { EmployeeStatusEnum } from 'src/constants/auth/enums';
-import { Role } from '../role/role.type';
+import { IRole } from '../role/role.type';
 
-export type DetailEmployee = {
+export interface IDetailEmployee {
   id: number;
   createdAt: Date;
   updatedAt: Date;
@@ -12,6 +12,6 @@ export type DetailEmployee = {
   dateJoin: Date;
   dateOut: Date;
   roleId: number;
-  role: Role;
+  role: IRole;
   salary: number;
-};
+}

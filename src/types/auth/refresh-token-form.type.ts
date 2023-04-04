@@ -1,3 +1,3 @@
-export type RefreshTokenForm = {
+export interface IRefreshTokenForm {
   refreshToken: string;
-};
+}

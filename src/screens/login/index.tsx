@@ -1,57 +1,46 @@
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView } from 'react-native';
 import {
   Button,
-  Box,
   Center,
   Heading,
+  HStack,
   Icon,
   Pressable,
-  VStack,
   Spinner,
-  HStack,
   Text,
+  VStack,
 } from 'native-base';
+import React, { useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import InputControl from 'src/components/InputControl';
-import { LoginForm } from 'src/types/auth/login-form.type';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { SafeAreaView } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { DismissKeyboardView } from 'src/components/DismissKeyboardView';
+import InputControl from 'src/components/InputControl';
+import { INTRO_SCREEN } from 'src/constants/navigate';
 import { useAuth } from 'src/hooks/useAuth';
-import { authService } from 'src/services/auth.service';
+import { ILoginForm } from 'src/types/auth/login-form.type';
 
-// type Inputs = {
-//   value: string;
-//   // exampleRequired: string,
-// };
 function LoginScreen(props: any) {
+  const { navigation } = props;
   const [showPass, setShowPass] = useState(false);
   const { actions, isLoading } = useAuth();
-  const { ...methods } = useForm<LoginForm>({ mode: 'onChange' });
+  const { ...methods } = useForm<ILoginForm>({ mode: 'onChange' });
 
-  const onSubmit: SubmitHandler<LoginForm> = async (data: LoginForm) => {
-    // actions.login(
-    //   data,
-    //   (response: any) => {
-    //     console.log(
-    //       '🚀 ~ file: index.tsx:33 ~ LoginScreen ~ response:',
-    //       response,
-    //     );
-    //   },
-    //   (error: any) => {
-    //     console.log('🚀 ~ file: index.tsx:38 ~ LoginScreen ~ error:', error);
-    //   },
-    // );
-    const response = await authService.login(data);
-    console.log(
-      '🚀 ~ file: index.tsx:46 ~ constonSubmit:SubmitHandler<LoginForm>= ~ response:',
-      response,
+  const onSubmit: SubmitHandler<ILoginForm> = async (data: ILoginForm) => {
+    actions.login(
+      data,
+      () => {
+        navigation.navigate(INTRO_SCREEN);
+      },
+      (error: any) => {
+        methods.setError('phoneNumber', { message: error?.message });
+      },
     );
   };
 
   return (
-    <SafeAreaView>
-      <Center w="100%" py="100">
+    <DismissKeyboardView enabled={true}>
+      <Center w="100%" py="56">
         <Heading
           size="lg"
           fontWeight="600"
@@ -105,7 +94,7 @@ function LoginScreen(props: any) {
           </VStack>
         </FormProvider>
       </Center>
-    </SafeAreaView>
+    </DismissKeyboardView>
   );
 }
 

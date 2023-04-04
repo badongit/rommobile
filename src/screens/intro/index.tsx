@@ -5,7 +5,7 @@
  * @format
  */
 
-import type {PropsWithChildren} from 'react';
+import type { PropsWithChildren } from 'react';
 import React from 'react';
 import {
   SafeAreaView,
@@ -24,12 +24,13 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import { useAuth } from 'src/hooks/useAuth';
 
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
-function Section({children, title}: SectionProps) {
+function Section({ children, title }: SectionProps) {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -57,6 +58,7 @@ function Section({children, title}: SectionProps) {
 
 function Intro(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
+  const { userInfo } = useAuth();
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -77,8 +79,7 @@ function Intro(): JSX.Element {
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
           <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
+            <Text style={styles.highlight}>{userInfo.name}</Text>
           </Section>
           <Section title="See Your Changes">
             <ReloadInstructions />

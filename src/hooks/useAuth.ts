@@ -1,5 +1,5 @@
 import authActions from 'src/redux/auth/actions';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';

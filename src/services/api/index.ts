@@ -3,7 +3,7 @@ import axios, { AxiosInstance } from 'axios';
 import { TOKEN_KEY } from 'src/constants/common';
 import { validateStatus } from 'src/utils/common';
 
-const BASE_URL = process.env.REACT_APP_HOST + '/api';
+const BASE_URL = 'http://192.168.18.1:3001' + '/api';
 const HEADERS_MULTIPLE_PART = {
   'Content-Type': 'multipart/form-data; boundary=something',
 };
@@ -40,7 +40,7 @@ export const createInstance = (baseURL: string) => {
       if (validateStatus(response.status)) {
         return response.data;
       } else {
-        // log loi o day
+        return response;
       }
     },
     async function (error) {
@@ -49,7 +49,7 @@ export const createInstance = (baseURL: string) => {
       const refreshToken = await AsyncStorage.getItem('refreshToken');
 
       if (
-        response.status === 403 &&
+        // response.status === 403 &&
         config &&
         (config.retry || 0) <= ATTEMPT_RETRY &&
         config.url !== REFRESH_TOKEN_URL &&
