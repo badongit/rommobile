@@ -1,3 +1,4 @@
 export const LOGIN_SCREEN = 'LOGIN_SCREEN';
 export const DASHBOARD_SCREEN = 'DASHBOARD_SCREEN';
 export const INTRO_SCREEN = 'INTRO_SCREEN';
+export const ORDER_SCREEN = 'ORDER_SCREEN';

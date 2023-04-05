@@ -3,7 +3,8 @@ import axios, { AxiosInstance } from 'axios';
 import { TOKEN_KEY } from 'src/constants/common';
 import { validateStatus } from 'src/utils/common';
 
-const BASE_URL = 'http://193.168.17.189:3001/api';
+// const BASE_URL = 'http://193.168.17.189:3001/api';
+const BASE_URL = 'http://192.168.18.1:3001/api';
 const HEADERS_MULTIPLE_PART = {
   'Content-Type': 'multipart/form-data; boundary=something',
 };
