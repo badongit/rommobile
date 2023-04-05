@@ -2,9 +2,9 @@ import { ILoginForm } from '../types/auth/login-form.type';
 import { IRefreshTokenForm } from '../types/auth/refresh-token-form.type';
 import api from './api';
 
-const URL_PREFIX = '/auth';
+const URL_PREFIX = '/tables';
 export const authService = {
-  login: (params: ILoginForm) => {
+  list: (params: ILoginForm) => {
     const url = URL_PREFIX + '/login';
     return api.post(url, params);
   },

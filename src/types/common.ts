@@ -18,3 +18,11 @@ export interface Meta {
 export interface ErrorResponse {
   [property: string]: string;
 }
+
+export interface IPaginationRequest {
+  isGetAll?: number;
+  page?: number;
+  limit?: number;
+  keyword?: string;
+  sort?: string;
+}
