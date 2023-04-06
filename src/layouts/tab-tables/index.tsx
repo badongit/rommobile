@@ -3,6 +3,7 @@ import InfoCard, { IInfoCardProps } from 'src/components/InfoCard';
 
 interface ITabTablesProps {
   cards: IInfoCardProps[];
+  floorId: number;
 }
 const TabTables = (props: ITabTablesProps) => {
   const { cards } = props;

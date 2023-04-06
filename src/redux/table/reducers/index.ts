@@ -1,53 +1,54 @@
+import { ITable } from 'src/types/table/table.type';
 import {
-  GET_ME_FAILED,
-  GET_ME_START,
-  GET_ME_SUCCESS,
-  LOGIN_FAILED,
-  LOGIN_START,
-  LOGIN_SUCCESS,
-  LOGOUT_FAILED,
-  LOGOUT_START,
-  LOGOUT_SUCCESS,
-} from 'src/redux/auth/actions';
+  TABLE_GET_LIST,
+  TABLE_GET_LIST_FAILED,
+  TABLE_GET_LIST_SUCCESS,
+} from '../actions';
 
-const initialState = {
-  isLoading: false,
-  tables: [],
-};
+interface ITableState {
+  [key: string]: {
+    isLoading: boolean;
+    items: ITable[];
+  };
+}
 
-export default function auth(state = initialState, action: any) {
+const initialState: ITableState = {};
+
+export default function tableReducer(state = initialState, action: any) {
   switch (action.type) {
-    case LOGIN_START:
-    case LOGOUT_START:
-    case GET_ME_START:
+    case TABLE_GET_LIST:
       return {
         ...state,
-        isLoading: true,
+        [action.payload.floorId]: {
+          ...state[action.payload.floorId],
+          isLoading: true,
+        },
       };
-    case LOGIN_SUCCESS:
+    case TABLE_GET_LIST_SUCCESS:
+      if (action.payload.items.length) {
+        return {
+          ...state,
+          [action.payload.items[0].floorId]: {
+            isLoading: false,
+            items: action.payload.items,
+          },
+        };
+      }
+
       return {
         ...state,
-        isLoading: false,
-        userInfo: action.payload,
+        [action.payload.floorId]: {
+          ...state[action.payload.floorId],
+          isLoading: false,
+        },
       };
-    case LOGOUT_SUCCESS:
+    case TABLE_GET_LIST_FAILED:
       return {
         ...state,
-        isLoading: false,
-        userInfo: {},
-      };
-    case GET_ME_SUCCESS:
-      return {
-        ...state,
-        isLoading: false,
-        userInfo: action.payload,
-      };
-    case LOGIN_FAILED:
-    case LOGOUT_FAILED:
-    case GET_ME_FAILED:
-      return {
-        ...state,
-        isLoading: false,
+        [action.payload.floorId]: {
+          ...state[action.payload.floorId],
+          isLoading: false,
+        },
       };
     default:
       return state;

@@ -1,78 +1,42 @@
 import { ILoginForm } from 'src/types/auth/login-form.type';
 import { ILoginResponse } from 'src/types/auth/login-response.type';
 import { IDetailEmployee } from 'src/types/employee/detail-employee.type';
+import { IListTableRequest } from 'src/types/table/list-table.request.type';
 
 export const TABLE_GET_LIST = 'table/get-list';
 export const TABLE_GET_LIST_SUCCESS = 'table/get-list-success';
+export const TABLE_GET_LIST_FAILED = 'table/get-list-failed';
 
-export function login(
-  payload: ILoginForm,
+export function getList(
+  payload: IListTableRequest,
   onSuccess?: Function,
   onError?: Function,
 ) {
   return {
-    type: LOGIN_START,
+    type: TABLE_GET_LIST,
     payload: payload,
     onSuccess: onSuccess,
     onError: onError,
   };
 }
 
-export function loginSuccess(payload: ILoginResponse) {
+export function getListSuccess(payload: ILoginResponse) {
   return {
-    type: LOGIN_SUCCESS,
+    type: TABLE_GET_LIST_SUCCESS,
     payload: payload,
   };
 }
 
-export function loginFailed() {
-  return { type: LOGIN_FAILED };
-}
-
-export function logout(onSuccess?: Function, onError?: Function) {
+export function getListFailed(floorId: number) {
   return {
-    type: LOGOUT_START,
-    onSuccess,
-    onError,
+    type: TABLE_GET_LIST_FAILED,
+    payload: { floorId },
   };
 }
 
-export function logoutSuccess() {
-  return { type: LOGOUT_SUCCESS };
-}
-
-export function logoutFailed() {
-  return { type: LOGOUT_FAILED };
-}
-
-export function getMe(onSuccess: Function, onError: Function) {
-  return {
-    type: GET_ME_START,
-    onSuccess,
-    onError,
-  };
-}
-
-export function getMeSuccess(payload: IDetailEmployee) {
-  return {
-    type: GET_ME_SUCCESS,
-    payload: payload,
-  };
-}
-
-export function getMeFailed() {
-  return { type: GET_ME_FAILED };
-}
-
-const authActions = {
-  login,
-  loginSuccess,
-  loginFailed,
-  logout,
-  logoutSuccess,
-  logoutFailed,
-  getMe,
-  getMeSuccess,
-  getMeFailed,
+const tableActions = {
+  getList,
+  getListSuccess,
+  getListFailed,
 };
-export default authActions;
+export default tableActions;

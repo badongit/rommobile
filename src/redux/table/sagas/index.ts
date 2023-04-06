@@ -1,8 +1,6 @@
 import { all } from 'redux-saga/effects';
-import watchGetMe from './get-me.saga';
-import watchLogin from './login.saga';
-import watchLogout from './logout.saga';
+import watchGetListTable from './get-list.saga';
 
-export default function* authSagas() {
-  yield all([watchLogin(), watchLogout(), watchGetMe()]);
+export default function* tableSagas() {
+  yield all([watchGetListTable()]);
 }
