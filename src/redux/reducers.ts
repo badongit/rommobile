@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 import authReducer from './auth/reducers';
-import tableReducer from './table/reducers';
+import floorReducer from './floor/reducers';
 
 const rootReducers = combineReducers({
   ...authReducer,
-  table: tableReducer,
+  floor: floorReducer,
 });
 export default rootReducers;

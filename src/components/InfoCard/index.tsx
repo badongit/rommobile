@@ -15,14 +15,18 @@ import {
 export interface IInfoCardProps {
   code: string;
   onPress: any;
-  children: any;
-  backgroundColor: ResponsiveValue<ColorType | ILinearGradientProps>;
+  children?: any;
+  backgroundColor?: ResponsiveValue<ColorType | ILinearGradientProps>;
 }
 const InfoCard = (props: IInfoCardProps) => {
   const { code, onPress, children, backgroundColor } = props;
   return (
     <Pressable onPress={onPress}>
-      <Box w="100%" rounded="lg" backgroundColor={backgroundColor} p="5">
+      <Box
+        w="100%"
+        rounded="lg"
+        backgroundColor={backgroundColor || 'light.50'}
+        p="5">
         <VStack alignItems="center">
           <Center>
             <Text fontSize="20" color="light.50">

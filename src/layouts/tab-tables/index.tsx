@@ -1,38 +1,63 @@
-import { HStack, ScrollView, VStack } from 'native-base';
+import { HStack, ScrollView, VStack, View } from 'native-base';
+import { useEffect } from 'react';
 import InfoCard, { IInfoCardProps } from 'src/components/InfoCard';
+import { ITable } from 'src/types/table/table.type';
 
 interface ITabTablesProps {
-  cards: IInfoCardProps[];
-  floorId: number;
+  tables?: ITable[];
+  floorId?: number;
 }
 const TabTables = (props: ITabTablesProps) => {
-  const { cards } = props;
+  const { tables } = props;
+  const cards: IInfoCardProps[] = [
+    {
+      code: 'B01',
+      onPress: () => {
+        console.log('haha');
+      },
+      backgroundColor: 'success.500',
+    },
+    {
+      code: 'B02',
+      onPress: () => {
+        console.log('haha');
+      },
+    },
+    {
+      code: 'B03',
+      onPress: () => {
+        console.log('haha');
+      },
+    },
+  ];
 
   return (
-    <ScrollView>
-      <HStack flexWrap="wrap" justifyContent="center">
-        <VStack flexBasis="45%">
-          {cards.map((card, index) => {
-            if (index % 2 !== 0) {
-              return null;
-            }
-
-            return <InfoCard {...card} />;
-          })}
-        </VStack>
-        <VStack flexBasis="45%">
+    <View w="100%">
+      <ScrollView>
+        <HStack flexWrap="wrap" justifyContent="center">
           <VStack flexBasis="45%">
             {cards.map((card, index) => {
-              if (index % 2 === 0) {
+              if (index % 2 !== 0) {
                 return null;
               }
 
-              return <InfoCard {...card} />;
+              return <InfoCard {...card} key={card.code} />;
             })}
           </VStack>
-        </VStack>
-      </HStack>
-    </ScrollView>
+          <VStack flexBasis="45%">
+            <VStack flexBasis="45%">
+              {cards.map((card, index) => {
+                if (index % 2 === 0) {
+                  return null;
+                }
+
+                return <InfoCard {...card} key={card.code} />;
+              })}
+            </VStack>
+          </VStack>
+        </HStack>
+      </ScrollView>
+    </View>
   );
 };
 
