@@ -29,7 +29,7 @@ const InfoCard = (props: IInfoCardProps) => {
         p="5">
         <VStack alignItems="center">
           <Center>
-            <Text fontSize="20" color="light.50">
+            <Text fontSize="30" color="light.50">
               {code}
             </Text>
           </Center>

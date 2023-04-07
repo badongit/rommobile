@@ -5,7 +5,7 @@
  * @format
  */
 
-import type { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 import React from 'react';
 import {
   SafeAreaView,
@@ -25,6 +25,9 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import { useAuth } from 'src/hooks/useAuth';
+import useFloor from 'src/hooks/useFloor';
+import TabTables from 'src/layouts/tab-tables';
+import { ITabViewItem } from 'src/layouts/tab-view';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -59,41 +62,55 @@ function Section({ children, title }: SectionProps) {
 function Intro(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   const { userInfo } = useAuth();
+  const { actions, items } = useFloor();
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  useEffect(() => {
+    actions.getList();
+  }, []);
+
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            <Text style={styles.highlight}>{userInfo.name}</Text>
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    //   <SafeAreaView style={backgroundStyle}>
+    //     <StatusBar
+    //       barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+    //       backgroundColor={backgroundStyle.backgroundColor}
+    //     />
+    //     <ScrollView
+    //       contentInsetAdjustmentBehavior="automatic"
+    //       style={backgroundStyle}>
+    //       <Header />
+    //       <View
+    //         style={{
+    //           backgroundColor: isDarkMode ? Colors.black : Colors.white,
+    //         }}>
+    //         <Section title="Step One">
+    //           <Text style={styles.highlight}>{userInfo.name}</Text>
+    //         </Section>
+    //         <Section title="See Your Changes">
+    //           <ReloadInstructions />
+    //         </Section>
+    //         <Section title="Debug">
+    //           <DebugInstructions />
+    //         </Section>
+    //         <Section title="Learn More">
+    //           Read the docs to discover what to do next:
+    //         </Section>
+    //         <LearnMoreLinks />
+    //       </View>
+    //     </ScrollView>
+    //   </SafeAreaView>
+    <View>
+      {items.length !== 0 ? (
+        <TabTables key={1} tables={items[0].tables} />
+      ) : (
+        <Section title="Learn More">
+          Read the docs to discover what to do next:
+        </Section>
+      )}
+    </View>
   );
 }
 

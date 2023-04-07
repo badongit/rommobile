@@ -1,9 +1,10 @@
 import { HStack, Pressable, ScrollView, Text, View } from 'native-base';
-import { useState } from 'react';
+import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import {
   Dimensions,
   NativeScrollEvent,
   NativeSyntheticEvent,
+  StyleSheet,
 } from 'react-native';
 
 const widthScreen = Dimensions.get('screen').width;
@@ -20,6 +21,7 @@ export interface ITabViewItem {
 const TabView = (props: any) => {
   const { tabs } = props;
   const [selected, setSelected] = useState(0);
+  const refScrollContent: MutableRefObject<any> = useRef(null);
 
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { nativeEvent } = event;
@@ -27,13 +29,23 @@ const TabView = (props: any) => {
     setSelected(index);
   };
 
+  const onPressNavItem = (index: number) => {
+    refScrollContent?.current?.scrollTo({
+      x: widthScreen * index,
+      y: 0,
+    });
+  };
+
   return (
     <View>
-      <ScrollView horizontal>
-        <HStack>
+      <ScrollView horizontal scrollEnabled={false}>
+        <HStack w="full">
           {tabs.map((tab: ITabViewItem, index: number) => {
             return (
-              <Pressable key={index} onPress={() => setSelected(index)}>
+              <Pressable
+                key={index}
+                onPress={() => onPressNavItem(index)}
+                flexBasis="1">
                 <Text
                   fontSize="md"
                   fontWeight="semibold"
@@ -58,13 +70,24 @@ const TabView = (props: any) => {
       <ScrollView
         horizontal
         pagingEnabled
+        ref={refScrollContent}
         snapToAlignment="center"
         decelerationRate="fast"
+        showsHorizontalScrollIndicator={false}
         onScroll={onScroll}>
-        {tabs.map((tab: ITabViewItem) => tab.element)}
+        {tabs.map((tab: ITabViewItem, index: number) => (
+          <View key={index} style={styles.itemScroll}>
+            {tab.element}
+          </View>
+        ))}
       </ScrollView>
     </View>
   );
 };
 
 export default TabView;
+const styles = StyleSheet.create({
+  itemScroll: {
+    width: widthScreen,
+  },
+});

@@ -4,7 +4,7 @@ import useFloor from 'src/hooks/useFloor';
 import TabTables from 'src/layouts/tab-tables';
 import TabView, { ITabViewItem } from 'src/layouts/tab-view';
 
-const OrderScreen = (props: any) => {
+const CreateOrderScreen = (props: any) => {
   const { actions, items } = useFloor();
   // const firstTab = {
   //   title: 'Mang về',
@@ -37,4 +37,4 @@ const OrderScreen = (props: any) => {
   );
 };
 
-export default OrderScreen;
+export default CreateOrderScreen;
