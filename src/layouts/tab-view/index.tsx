@@ -1,26 +1,38 @@
-import { HStack, Pressable, ScrollView, Text, View } from 'native-base';
-import { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { ScrollView, View } from 'native-base';
+import { MutableRefObject, useRef, useState } from 'react';
 import {
   Dimensions,
   NativeScrollEvent,
   NativeSyntheticEvent,
   StyleSheet,
 } from 'react-native';
+import { IMenuCustomItemProps } from '../menu';
+import DefaultMenu from '../menu/DefaultMenu';
 
 const widthScreen = Dimensions.get('screen').width;
 
 export interface ITabViewProps {
   tabs: ITabViewItem[];
+  MenuView?: any;
 }
 
 export interface ITabViewItem {
   title: string;
+  image?: string;
   element?: JSX.Element;
 }
 
-const TabView = (props: any) => {
-  const { tabs } = props;
+const TabView = (props: ITabViewProps) => {
+  const { tabs, MenuView } = props;
+  const menuItems: IMenuCustomItemProps[] = [
+    ...tabs.map((tab, index) => ({
+      title: tab.title,
+      image: tab.image,
+      onPress: () => setSelected(index),
+    })),
+  ];
   const [selected, setSelected] = useState(0);
+
   const refScrollContent: MutableRefObject<any> = useRef(null);
 
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -38,35 +50,15 @@ const TabView = (props: any) => {
 
   return (
     <View>
-      <ScrollView horizontal scrollEnabled={false}>
-        <HStack w="full">
-          {tabs.map((tab: ITabViewItem, index: number) => {
-            return (
-              <Pressable
-                key={index}
-                onPress={() => onPressNavItem(index)}
-                flexBasis="1">
-                <Text
-                  fontSize="md"
-                  fontWeight="semibold"
-                  px={4}
-                  py={2}
-                  color={selected === index ? 'red.500' : 'dark.50'}>
-                  {tab.title}
-                </Text>
-                {selected === index && (
-                  <View
-                    w="100%"
-                    h="1"
-                    borderRadius="2px"
-                    backgroundColor="red.500"
-                  />
-                )}
-              </Pressable>
-            );
-          })}
-        </HStack>
-      </ScrollView>
+      {MenuView ? (
+        <MenuView items={menuItems} isScrollable={true} selected={selected} />
+      ) : (
+        <DefaultMenu
+          items={menuItems}
+          isScrollable={true}
+          selected={selected}
+        />
+      )}
       <ScrollView
         horizontal
         pagingEnabled

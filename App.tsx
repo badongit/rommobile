@@ -12,7 +12,7 @@ import { StyleSheet, Text, useColorScheme, View } from 'react-native';
 import { NativeBaseProvider } from 'native-base';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { Provider } from 'react-redux';
-import MyNavigateContainer from './src/layouts/navigation-container';
+import MyNavigateContainer from 'src/layouts/navigation-container';
 import store from './src/redux/store';
 
 type SectionProps = PropsWithChildren<{
