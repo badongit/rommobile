@@ -14,6 +14,7 @@ const widthScreen = Dimensions.get('screen').width;
 export interface ITabViewProps {
   tabs: ITabViewItem[];
   MenuView?: any;
+  isScrollable?: boolean;
 }
 
 export interface ITabViewItem {
@@ -23,12 +24,20 @@ export interface ITabViewItem {
 }
 
 const TabView = (props: ITabViewProps) => {
-  const { tabs, MenuView } = props;
+  const { tabs, MenuView, isScrollable } = props;
+
+  const onPressMenuItem = (index: number) => {
+    refScrollContent?.current?.scrollTo({
+      x: widthScreen * index,
+      y: 0,
+    });
+  };
+
   const menuItems: IMenuCustomItemProps[] = [
     ...tabs.map((tab, index) => ({
       title: tab.title,
       image: tab.image,
-      onPress: () => setSelected(index),
+      onPress: () => onPressMenuItem(index),
     })),
   ];
   const [selected, setSelected] = useState(0);
@@ -43,15 +52,20 @@ const TabView = (props: ITabViewProps) => {
 
   return (
     <View>
-      {MenuView ? (
-        <MenuView items={menuItems} isScrollable={true} selected={selected} />
+      {isScrollable ? (
+        <ScrollView horizontal>
+          {MenuView ? (
+            <MenuView items={menuItems} selected={selected} />
+          ) : (
+            <DefaultMenu items={menuItems} selected={selected} />
+          )}
+        </ScrollView>
+      ) : MenuView ? (
+        <MenuView items={menuItems} selected={selected} />
       ) : (
-        <DefaultMenu
-          items={menuItems}
-          isScrollable={true}
-          selected={selected}
-        />
+        <DefaultMenu items={menuItems} selected={selected} />
       )}
+
       <ScrollView
         horizontal
         pagingEnabled

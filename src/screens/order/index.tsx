@@ -32,7 +32,7 @@ const OrderScreen = (props: any) => {
 
   return (
     <SafeAreaView>
-      <TabView tabs={tabs} />
+      <TabView tabs={tabs} isScrollable={true} />
     </SafeAreaView>
   );
 };

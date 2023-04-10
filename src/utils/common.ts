@@ -7,7 +7,7 @@ export const validateStatus = (code: number): boolean => {
 };
 
 export function getImage(name?: string): string {
-  return HOST + name;
+  return HOST + '/' + name;
 }
 
 export function formatToCurrency(value: number | string): string {

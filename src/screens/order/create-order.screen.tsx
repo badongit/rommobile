@@ -136,12 +136,10 @@ const CreateOrderScreen = (props: any) => {
   ];
 
   return (
-    <DismissKeyboardView>
-      <View>
-        <DefaultMenu items={menuItems} selected={selectedScreen} />
-        <TabView tabs={tabs} MenuView={MenuCircle} />
-      </View>
-    </DismissKeyboardView>
+    <SafeAreaView>
+      <DefaultMenu items={menuItems} selected={selectedScreen} />
+      <TabView tabs={tabs} MenuView={MenuCircle} isScrollable={true} />
+    </SafeAreaView>
   );
 };
 
