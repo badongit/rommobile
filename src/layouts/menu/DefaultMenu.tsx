@@ -1,8 +1,21 @@
 import { HStack, Pressable, ScrollView, Text, View } from 'native-base';
+import { MutableRefObject, useRef } from 'react';
+import { Dimensions } from 'react-native';
 import { IMenuCustomItemProps, IMenuCustomProps } from '.';
+const widthScreen = Dimensions.get('screen').width;
 
 const DefaultMenu = (props: IMenuCustomProps) => {
   const { items, selectedColor, selected, isScrollable } = props;
+  const refScrollContent: MutableRefObject<any> = useRef(null);
+
+  const defaultPressNavItem = (index: number) => {
+    if (isScrollable) {
+      refScrollContent?.current?.scrollTo({
+        x: widthScreen * index,
+        y: 0,
+      });
+    }
+  };
 
   function render() {
     return (
@@ -11,7 +24,10 @@ const DefaultMenu = (props: IMenuCustomProps) => {
           const { title, onPress } = item;
           const color = item.selectedColor || selectedColor || 'red.500';
           return (
-            <Pressable flex={1} key={index} onPress={onPress}>
+            <Pressable
+              flex={1}
+              key={index}
+              onPress={onPress || (() => defaultPressNavItem(index))}>
               <Text
                 fontSize="md"
                 fontWeight="semibold"
@@ -37,7 +53,9 @@ const DefaultMenu = (props: IMenuCustomProps) => {
   }
 
   return isScrollable ? (
-    <ScrollView horizontal>{render()}</ScrollView>
+    <ScrollView horizontal ref={refScrollContent}>
+      {render()}
+    </ScrollView>
   ) : (
     render()
   );

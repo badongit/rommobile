@@ -34,3 +34,5 @@ export const DismissKeyboardView = (props: Props) => {
     </SafeAreaView>
   );
 };
+
+export default DismissKeyboardView;

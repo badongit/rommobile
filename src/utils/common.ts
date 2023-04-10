@@ -1,3 +1,5 @@
+import { HOST } from 'src/constants/common';
+
 const SUCCESS_CODE = [200, 201];
 
 export const validateStatus = (code: number): boolean => {
@@ -5,5 +7,12 @@ export const validateStatus = (code: number): boolean => {
 };
 
 export function getImage(name?: string): string {
-  return 'http://193.168.17.189:3001/' + name;
+  return HOST + name;
+}
+
+export function formatToCurrency(value: number | string): string {
+  return value.toLocaleString('vi', {
+    style: 'currency',
+    currency: 'VND',
+  });
 }

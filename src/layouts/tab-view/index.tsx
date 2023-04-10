@@ -41,13 +41,6 @@ const TabView = (props: ITabViewProps) => {
     setSelected(index);
   };
 
-  const onPressNavItem = (index: number) => {
-    refScrollContent?.current?.scrollTo({
-      x: widthScreen * index,
-      y: 0,
-    });
-  };
-
   return (
     <View>
       {MenuView ? (

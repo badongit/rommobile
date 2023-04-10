@@ -1,5 +1,5 @@
 import { HStack, Image, Text, View } from 'native-base';
-import { getImage } from 'src/utils/common';
+import { formatToCurrency, getImage } from 'src/utils/common';
 
 export interface IDishCardProps {
   image: string;
@@ -8,7 +8,7 @@ export interface IDishCardProps {
 }
 
 const DishCard = (props: any) => {
-  const { title, image, children } = props;
+  const { title, image, children, price } = props;
   return (
     <View w="100%">
       <HStack space={4}>
@@ -24,9 +24,12 @@ const DishCard = (props: any) => {
           <Text
             color="dark.50"
             fontWeight="semibold"
-            fontSize={14}
+            fontSize={15}
             isTruncated={true}>
             {title}
+          </Text>
+          <Text color="dark.50" fontSize={13}>
+            {'Giá: ' + formatToCurrency(price)}
           </Text>
           {children}
         </View>

@@ -20,6 +20,7 @@ import MenuCircle from 'src/layouts/menu/MenuCircle';
 import TabView, { ITabViewItem } from 'src/layouts/tab-view';
 import { IDish } from 'src/types/dish/dish.type';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import DismissKeyboardView from 'src/components/DismissKeyboardView';
 
 export interface ICart {
   [key: string]: number;
@@ -34,12 +35,15 @@ const CreateOrderScreen = (props: any) => {
     actions.getList();
   }, []);
 
-  function onChangeCart(id: number, change: number) {
+  function onChangeCart(id: number, change: number | string) {
     console.log('haha');
 
+    if (typeof change === 'string' && !Number.isInteger(+change)) {
+      return false;
+    }
     setCarts(pre => {
-      if (change <= 0) delete pre[id];
-      else pre[id] = change;
+      if (+change <= 0) delete pre[id];
+      else pre[id] = +change > 500 ? 500 : +change;
 
       return Object.assign({}, pre);
     });
@@ -55,37 +59,45 @@ const CreateOrderScreen = (props: any) => {
         <VStack px={3} space={4} alignItems="flex-end">
           {dishes.map(dish => {
             return (
-              <DishCard key={dish.id} image={dish.image} title={dish.name}>
-                <HStack alignItems="center" space={3} mt={6}>
+              <DishCard
+                key={dish.id}
+                image={dish.image}
+                title={dish.name}
+                price={dish.price}>
+                <HStack
+                  alignItems="center"
+                  space={3}
+                  mt={6}
+                  w="full"
+                  justifyContent="flex-end">
                   {carts[dish.id] && (
                     <Pressable
                       onPress={() => onChangeCart(dish.id, carts[dish.id] - 1)}>
                       <Icon
                         color="red.500"
-                        size={6}
+                        size={5}
                         as={<AntDesign name="minuscircleo" />}
                       />
                     </Pressable>
                   )}
-                  {carts[dish.id] && (
-                    <Input
-                      size="xs"
-                      w="12"
-                      variant="filled"
-                      onChangeText={event => onChangeCart(dish.id, +event)}
-                      fontSize={14}
-                      color="dark.50"
-                      textAlign="center"
-                      value={carts[dish.id].toString()}
-                    />
-                  )}
+                  <Input
+                    size="xs"
+                    w="52px"
+                    variant="filled"
+                    onChangeText={event => onChangeCart(dish.id, event)}
+                    fontSize={14}
+                    keyboardType="number-pad"
+                    color="dark.50"
+                    textAlign="center"
+                    value={carts[dish.id]?.toString()}
+                  />
                   <Pressable
                     onPress={() =>
                       onChangeCart(dish.id, (carts[dish.id] || 0) + 1)
                     }>
                     <Icon
                       color="red.500"
-                      size={6}
+                      size={5}
                       as={<AntDesign name="pluscircleo" />}
                     />
                   </Pressable>
@@ -124,10 +136,12 @@ const CreateOrderScreen = (props: any) => {
   ];
 
   return (
-    <SafeAreaView>
-      <DefaultMenu items={menuItems} selected={selectedScreen} />
-      <TabView tabs={tabs} MenuView={MenuCircle} />
-    </SafeAreaView>
+    <DismissKeyboardView>
+      <View>
+        <DefaultMenu items={menuItems} selected={selectedScreen} />
+        <TabView tabs={tabs} MenuView={MenuCircle} />
+      </View>
+    </DismissKeyboardView>
   );
 };
 
