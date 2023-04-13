@@ -14,6 +14,7 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { Provider } from 'react-redux';
 import MyNavigateContainer from 'src/layouts/navigation-container';
 import store from './src/redux/store';
+import { SocketProvider } from 'src/contexts/SocketContext';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -54,9 +55,11 @@ function App(): JSX.Element {
 
   return (
     <Provider store={store}>
-      <NativeBaseProvider>
-        <MyNavigateContainer />
-      </NativeBaseProvider>
+      <SocketProvider>
+        <NativeBaseProvider>
+          <MyNavigateContainer />
+        </NativeBaseProvider>
+      </SocketProvider>
     </Provider>
   );
 }

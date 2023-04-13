@@ -1,22 +1,27 @@
 import { createContext, useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 import { HOST } from 'src/constants/common';
 
-export const SocketContext = createContext({});
+export interface ISocketContext {
+  socket: Socket | null;
+}
+
+export const SocketContext = createContext<ISocketContext>({ socket: null });
 
 export const SocketProvider = (props: any) => {
   const { children } = props;
-  const [socket, setSocket] = useState<any>(null);
+  const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
     const socket = io(HOST, { transports: ['websocket'] });
+
     socket.connect();
 
-    setSocket(socket);
-
-    socket.on('test', data => {
-      console.log(data);
+    socket.on('error', (data: any) => {
+      console.log('error: ', data);
     });
+
+    setSocket(socket);
   }, []);
 
   return (
