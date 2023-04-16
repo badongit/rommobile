@@ -12,8 +12,6 @@ function* doLogout(action: any) {
 
     yield put(logoutSuccess());
 
-    // TODO: redirect login screen
-
     if (action.onSuccess) {
       yield action.onSuccess();
     }

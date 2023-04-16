@@ -12,7 +12,7 @@ import MenuCard, { IMenuCardProps } from 'src/components/MenuCard';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { INTRO_SCREEN } from 'src/constants/navigate';
+import { INTRO_SCREEN, ORDER_SCREEN } from 'src/constants/navigate';
 
 const DashboardScreen = (props: any) => {
   const { navigation } = props;
@@ -21,7 +21,7 @@ const DashboardScreen = (props: any) => {
       backgroundIcon: 'red.600',
       IconElement: <MaterialIcons name="ramen-dining" />,
       onPress: () => {
-        navigation.navigate(INTRO_SCREEN);
+        navigation.navigate(ORDER_SCREEN);
       },
       title: 'Gọi món',
     },

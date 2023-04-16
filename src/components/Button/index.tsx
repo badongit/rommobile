@@ -9,8 +9,7 @@ const CustomButton = (props: Props) => {
   const { title, onPress } = props;
   return (
     <Button
-      backgroundColor="red.500"
-      _disabled={{ backgroundColor: 'warmGray.500' }}
+      backgroundColor={props.disabled ? 'muted.500' : 'red.500'}
       {...props}
       onPress={onPress}>
       <Text color="light.50">{title}</Text>

@@ -5,15 +5,29 @@ export interface IDishCardProps {
   image: string;
   title: string;
   children?: JSX.Element;
+  imageSize?: string;
+  quantity?: number;
+  topComponent?: JSX.Element;
 }
 
 const DishCard = (props: any) => {
-  const { title, image, children, price } = props;
+  const { title, image, children, price, imageSize, quantity, topComponent } =
+    props;
   return (
     <View w="100%">
+      {topComponent}
+      {!!topComponent && (
+        <View
+          w="full"
+          h="1px"
+          borderRadius="1px"
+          backgroundColor="muted.500"
+          my={4}
+          opacity={20}></View>
+      )}
       <HStack space={4}>
         <Image
-          size={100}
+          size={imageSize || '100'}
           alt={title}
           source={{
             uri: getImage(image),
@@ -28,9 +42,17 @@ const DishCard = (props: any) => {
             isTruncated={true}>
             {title}
           </Text>
-          <Text color="dark.50" fontSize={13}>
-            {'Giá: ' + formatToCurrency(price)}
-          </Text>
+          <HStack flex={1}>
+            <Text color="dark.50" fontSize={13} flex={1.5}>
+              {'Giá: ' + formatToCurrency(price)}
+            </Text>
+            {!!quantity && (
+              <Text color="dark.50" fontSize={13} flex={1}>
+                {'Số lượng: ' + quantity}
+              </Text>
+            )}
+          </HStack>
+
           {children}
         </View>
       </HStack>

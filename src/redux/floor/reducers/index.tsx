@@ -3,6 +3,8 @@ import {
   FLOOR_GET_LIST,
   FLOOR_GET_LIST_FAILED,
   FLOOR_GET_LIST_SUCCESS,
+  FLOOR_RESET,
+  TABLE_GET_ONE,
 } from '../actions';
 
 const initialState: IFloorState = {
@@ -28,6 +30,23 @@ export default function floorReducer(state = initialState, action: any) {
         ...state,
         isLoading: false,
       };
+    case TABLE_GET_ONE:
+      const newItems = state.items.map(item => {
+        if (item.id === action.payload.floorId) {
+          item.tables = item.tables.map(table => {
+            if (table.id === action.payload.id) return action.payload;
+            return table;
+          });
+        }
+        return item;
+      });
+
+      return {
+        ...state,
+        items: newItems,
+      };
+    case FLOOR_RESET:
+      return initialState;
     default:
       return state;
   }

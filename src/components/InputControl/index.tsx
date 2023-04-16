@@ -1,5 +1,4 @@
 import { Input, Stack, Text, WarningOutlineIcon } from 'native-base';
-import { useEffect } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
 const InputControl = (props: any) => {
@@ -7,7 +6,11 @@ const InputControl = (props: any) => {
   const { formState, getFieldState } = formContext;
   const { name, rules, defaultValue, label, ...inputProps } = props;
   const { invalid, error, isTouched } = getFieldState(name, formState);
-  const { field } = useController({ name, rules, defaultValue });
+  const { field } = useController({
+    name,
+    rules,
+    defaultValue,
+  });
 
   return (
     <Stack mx={4}>

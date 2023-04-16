@@ -15,6 +15,7 @@ import { Provider } from 'react-redux';
 import MyNavigateContainer from 'src/layouts/navigation-container';
 import store from './src/redux/store';
 import { SocketProvider } from 'src/contexts/SocketContext';
+import FlashMessage from 'react-native-flash-message';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -58,6 +59,7 @@ function App(): JSX.Element {
       <SocketProvider>
         <NativeBaseProvider>
           <MyNavigateContainer />
+          <FlashMessage position="top" />
         </NativeBaseProvider>
       </SocketProvider>
     </Provider>

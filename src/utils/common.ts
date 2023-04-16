@@ -16,3 +16,7 @@ export function formatToCurrency(value: number | string): string {
     currency: 'VND',
   });
 }
+
+export function formatToDate(value: Date): string {
+  return new Date(value).toLocaleString();
+}

@@ -7,3 +7,7 @@ export interface ITable {
   maxPeople: number;
   floorId: number;
 }
+
+export interface ITableMap {
+  [key: string | number]: ITable;
+}

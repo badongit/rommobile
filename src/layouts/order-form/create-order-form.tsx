@@ -1,0 +1,152 @@
+import { add, multiply } from 'lodash';
+import { HStack, Text, VStack, View } from 'native-base';
+import { useEffect, useState } from 'react';
+import { FormProvider, UseFormReturn } from 'react-hook-form';
+import Button from 'src/components/Button';
+import InputControl from 'src/components/InputControl';
+import { OrderStatusColor, OrderStatusText } from 'src/constants/order';
+import useFloor from 'src/hooks/useFloor';
+import { customerService } from 'src/services/customer.service';
+import { ICreateOrder } from 'src/types/order/create-order.type';
+import { IOrder } from 'src/types/order/order.type';
+import { formatToCurrency } from 'src/utils/common';
+
+export interface ICreateOrderForm {
+  methods: UseFormReturn<ICreateOrder>;
+  order?: IOrder;
+  tableId?: string | number;
+  waitingTicket?: string;
+  onSubmit: any;
+}
+const CreateOrderForm = (props: ICreateOrderForm) => {
+  const { methods, order, tableId, waitingTicket, onSubmit } = props;
+  const { watch, getFieldState, setValue } = methods;
+  const { tableMap } = useFloor();
+  const [tempPayment, setTempPayment] = useState(0);
+
+  useEffect(() => {
+    if (order) {
+      let money = 0;
+      order.details.forEach(detail => {
+        money = add(money, multiply(detail.price, detail.quantity));
+      });
+
+      setTempPayment(money);
+    }
+  }, [order]);
+
+  useEffect(() => {
+    const timerId = setTimeout(async () => {
+      const phoneNumber = watch('customerPhoneNumber');
+      if (phoneNumber && !getFieldState('customerPhoneNumber').invalid) {
+        const response = await customerService.list({ phoneNumber });
+
+        if (response?.data?.items?.length) {
+          const customer = response.data.items[0];
+          setValue('customerName', customer.name);
+        }
+      }
+    }, 500);
+
+    return () => clearTimeout(timerId);
+  }, [watch('customerPhoneNumber')]);
+
+  return (
+    <View backgroundColor="white" borderRadius="lg" p={4}>
+      <FormProvider {...methods}>
+        <VStack w="full" space={2}>
+          <Text>
+            Mã HĐ: <Text fontWeight="semibold">{order?.code}</Text>
+          </Text>
+          <Text>
+            Trạng thái:{' '}
+            <Text
+              fontWeight="semibold"
+              color={order ? OrderStatusColor[order.status] : 'black'}>
+              {order ? OrderStatusText[order.status] : ''}
+            </Text>
+          </Text>
+          {!!tableId && (
+            <Text>
+              Bàn: <Text fontWeight="semibold">{tableMap[tableId]?.code}</Text>
+            </Text>
+          )}
+          {!!waitingTicket && (
+            <Text>
+              Phiếu đợi: <Text fontWeight="semibold">{waitingTicket}</Text>
+            </Text>
+          )}
+          <HStack alignItems="center">
+            <Text>SĐT KH: </Text>
+            <View flex={1}>
+              <InputControl
+                name="customerPhoneNumber"
+                placeholder="Số điện thoại"
+                size="md"
+                px={2}
+                py={1}
+                keyboardType="number-pad"
+                variant="underlined"
+                rules={{
+                  minLength: {
+                    value: 10,
+                    message: 'Số điện thoại không hợp lệ',
+                  },
+                  maxLength: {
+                    value: 10,
+                    message: 'Số điện thoại không hợp lệ',
+                  },
+                  pattern: {
+                    value: /(0[3|5|7|8|9])+([0-9]{8})\b/,
+                    message: 'Số điện thoại không đúng định dạng',
+                  },
+                }}
+              />
+            </View>
+          </HStack>
+          <HStack alignItems="center">
+            <Text>Tên KH: </Text>
+            <View flex={1}>
+              <InputControl
+                name="customerName"
+                placeholder="Tên khách hàng"
+                size="md"
+                variant="underlined"
+                px={2}
+                py={0}
+              />
+            </View>
+          </HStack>
+          <HStack alignItems="center">
+            <Text>Ghi chú: </Text>
+            <View flex={1}>
+              <InputControl
+                name="note"
+                placeholder="Ghi chú..."
+                size="md"
+                variant="underlined"
+                px={2}
+                py={0}
+              />
+            </View>
+          </HStack>
+          <Text>
+            Tạm tính:{' '}
+            <Text fontWeight="semibold">{formatToCurrency(tempPayment)}</Text>
+          </Text>
+          <HStack justifyContent="flex-end">
+            <Button
+              mx="4"
+              px="4"
+              title="Lưu"
+              disabled={!order}
+              onPress={methods.handleSubmit(onSubmit)}
+            />
+          </HStack>
+        </VStack>
+      </FormProvider>
+    </View>
+  );
+};
+
+export default CreateOrderForm;

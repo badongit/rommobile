@@ -1,37 +1,36 @@
 import {
   Center,
   Heading,
-  HStack,
   Icon,
+  Image,
   Pressable,
   Spinner,
-  Text,
   VStack,
 } from 'native-base';
 import React, { useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { SafeAreaView } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Button from 'src/components/Button';
 import { DismissKeyboardView } from 'src/components/DismissKeyboardView';
 import InputControl from 'src/components/InputControl';
-import { DASHBOARD_SCREEN, INTRO_SCREEN } from 'src/constants/navigate';
+import { SPLASH_SCREEN } from 'src/constants/navigate';
 import { useAuth } from 'src/hooks/useAuth';
 import { ILoginForm } from 'src/types/auth/login-form.type';
+const logoImg = require('src/assets/images/logo.png');
 
 function LoginScreen(props: any) {
   const { navigation } = props;
   const [showPass, setShowPass] = useState(false);
   const { actions, isLoading } = useAuth();
-  const { ...methods } = useForm<ILoginForm>({ mode: 'onChange' });
+  const methods = useForm<ILoginForm>({ mode: 'onChange' });
 
   const onSubmit: SubmitHandler<ILoginForm> = async (data: ILoginForm) => {
     if (data.phoneNumber && data.password) {
       actions.login(
         data,
         () => {
-          navigation.navigate(DASHBOARD_SCREEN);
+          navigation.navigate(SPLASH_SCREEN);
         },
         (error: any) => {
           methods.setError('phoneNumber', { message: error?.message });
@@ -42,7 +41,8 @@ function LoginScreen(props: any) {
 
   return (
     <DismissKeyboardView enabled={true}>
-      <Center w="100%" py="56">
+      <Center w="100%" flex={1} backgroundColor="white">
+        <Image source={logoImg} alt="logo" w="200px" h="200px" />
         <Heading
           size="lg"
           fontWeight="600"
@@ -56,6 +56,7 @@ function LoginScreen(props: any) {
             <InputControl
               name="phoneNumber"
               placeholder="Số điện thoại"
+              keyboardType="number-pad"
               InputRightElement={
                 <Icon
                   as={<AntDesign name="user" size={24} color="black" />}

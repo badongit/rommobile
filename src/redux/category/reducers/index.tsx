@@ -4,6 +4,7 @@ import {
   CATEGORY_GET_LIST,
   CATEGORY_GET_LIST_FAILED,
   CATEGORY_GET_LIST_SUCCESS,
+  CATEGORY_RESET,
 } from '../actions';
 import { IDish } from 'src/types/dish/dish.type';
 
@@ -43,6 +44,8 @@ export default function categoryReducer(state = initialState, action: any) {
         ...state,
         dishMap: action.payload,
       };
+    case CATEGORY_RESET:
+      return initialState;
     default:
       return state;
   }

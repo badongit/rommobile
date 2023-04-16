@@ -53,7 +53,7 @@ export function logoutFailed() {
   return { type: LOGOUT_FAILED };
 }
 
-export function getMe(onSuccess: Function, onError: Function) {
+export function getMe(onSuccess?: Function | null, onError?: Function | null) {
   return {
     type: GET_ME_START,
     onSuccess,

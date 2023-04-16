@@ -3,13 +3,16 @@ import { useEffect, useState } from 'react';
 import InfoCard, { IInfoCardProps } from 'src/components/InfoCard';
 import { ITable } from 'src/types/table/table.type';
 import Feather from 'react-native-vector-icons/Feather';
+import { TableStateColorMap } from 'src/constants/table';
+import { CREATE_ORDER_SCREEN } from 'src/constants/navigate';
 
 interface ITabTablesProps {
   tables: ITable[];
   floorId?: number;
+  navigation?: any;
 }
 const TabTables = (props: ITabTablesProps) => {
-  const { tables } = props;
+  const { tables, navigation } = props;
   const [cards, setCards] = useState<IInfoCardProps[]>([]);
 
   useEffect(() => {
@@ -17,9 +20,9 @@ const TabTables = (props: ITabTablesProps) => {
       return {
         code: table.code,
         onPress: () => {
-          console.log('code', table.code);
+          navigation.navigate(CREATE_ORDER_SCREEN, { tableId: table.id });
         },
-        backgroundColor: 'success.600',
+        backgroundColor: TableStateColorMap[table.status],
         children: (
           <HStack mt="2" alignItems="center" space={2}>
             <Icon as={<Feather name="users" />} color="light.50" />
