@@ -5,7 +5,9 @@ import { FormProvider, UseFormReturn } from 'react-hook-form';
 import Button from 'src/components/Button';
 import InputControl from 'src/components/InputControl';
 import { OrderStatusColor, OrderStatusText } from 'src/constants/order';
+import { OrderStatusEnum } from 'src/constants/order/enums';
 import useFloor from 'src/hooks/useFloor';
+import useSocket from 'src/hooks/useSocket';
 import { customerService } from 'src/services/customer.service';
 import { ICreateOrder } from 'src/types/order/create-order.type';
 import { IOrder } from 'src/types/order/order.type';
@@ -23,6 +25,7 @@ const CreateOrderForm = (props: ICreateOrderForm) => {
   const { watch, getFieldState, setValue } = methods;
   const { tableMap } = useFloor();
   const [tempPayment, setTempPayment] = useState(0);
+  const { confirmOrder, cancelOrder } = useSocket();
 
   useEffect(() => {
     if (order) {
@@ -134,13 +137,35 @@ const CreateOrderForm = (props: ICreateOrderForm) => {
             Tạm tính:{' '}
             <Text fontWeight="semibold">{formatToCurrency(tempPayment)}</Text>
           </Text>
-          <HStack justifyContent="flex-end">
+          <HStack justifyContent="flex-end" space={2}>
+            {order?.status === OrderStatusEnum.WAIT_CONFIRM && (
+              <Button
+                px="4"
+                title="Xác nhận"
+                disabled={!order}
+                onPress={() => confirmOrder({ id: order.id })}
+                flex={1 / 3}
+              />
+            )}
+            {order?.status === OrderStatusEnum.WAIT_CONFIRM && (
+              <Button
+                px="4"
+                title="Hủy"
+                disabled={!order}
+                onPress={() => cancelOrder({ id: order.id })}
+                flex={1 / 3}
+              />
+            )}
             <Button
-              mx="4"
               px="4"
               title="Lưu"
-              disabled={!order}
+              disabled={
+                !order ||
+                methods.getValues('customerPhoneNumber') === '' ||
+                !methods.formState.isValid
+              }
               onPress={methods.handleSubmit(onSubmit)}
+              flex={1 / 3}
             />
           </HStack>
         </VStack>

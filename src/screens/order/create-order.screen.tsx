@@ -117,6 +117,7 @@ const CreateOrderScreen = (props: any) => {
         });
       });
       updateOrder({ ...data, id: order.id, details: details });
+      setCarts({});
     }
   };
 
