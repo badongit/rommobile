@@ -13,7 +13,7 @@ const SplashScreen = (props: any) => {
   const { actions: authActions, userInfo } = useAuth();
   const { actions: floorActions, items: floors } = useFloor();
   const { actions: categoryActions, items: categories } = useCategory();
-  const { actions: orderActions, orderMap } = useOrder();
+  const { actions: orderActions } = useOrder();
 
   useEffect(() => {
     if (!userInfo.id) {

@@ -26,3 +26,7 @@ export interface IPaginationRequest {
   keyword?: string;
   sort?: string;
 }
+
+export interface IdParamsDto {
+  id: number;
+}

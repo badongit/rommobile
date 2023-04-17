@@ -7,6 +7,7 @@ import {
   ORDER_RESET,
 } from '../actions';
 import { keyBy } from 'lodash';
+import { OrderStatusEnum } from 'src/constants/order/enums';
 
 export interface IOrderState {
   itemMap: {
@@ -39,12 +40,23 @@ export default function orderReducer(state = initialState, action: any) {
         isLoading: false,
       };
     case ORDER_GET_ONE:
+      const newItemMap = {
+        ...state.itemMap,
+      };
+
+      if (
+        [OrderStatusEnum.CANCEL, OrderStatusEnum.COMPLETED].includes(
+          action.payload.status,
+        )
+      ) {
+        delete newItemMap[action.payload.id];
+      } else {
+        newItemMap[action.payload.id] = action.payload;
+      }
+
       return {
         ...state,
-        itemMap: {
-          ...state.itemMap,
-          [action.payload.id]: action.payload,
-        },
+        itemMap: newItemMap,
       };
     case ORDER_RESET:
       return initialState;
