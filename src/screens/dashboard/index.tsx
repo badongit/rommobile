@@ -1,18 +1,14 @@
-import {
-  Box,
-  Center,
-  HStack,
-  ScrollView,
-  Stack,
-  View,
-  VStack,
-} from 'native-base';
+import { Box, HStack, ScrollView, View, VStack } from 'native-base';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import MenuCard, { IMenuCardProps } from 'src/components/MenuCard';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { INTRO_SCREEN, ORDER_SCREEN } from 'src/constants/navigate';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MenuCard, { IMenuCardProps } from 'src/components/MenuCard';
+import {
+  INTRO_SCREEN,
+  ORDER_SCREEN,
+  PERFORM_SCREEN,
+} from 'src/constants/navigate';
 
 const DashboardScreen = (props: any) => {
   const { navigation } = props;
@@ -29,7 +25,7 @@ const DashboardScreen = (props: any) => {
       backgroundIcon: 'orange.600',
       IconElement: <MaterialIcons name="restaurant-menu" />,
       onPress: () => {
-        navigation.navigate(INTRO_SCREEN);
+        navigation.navigate(PERFORM_SCREEN);
       },
       title: 'Thực hiện',
     },

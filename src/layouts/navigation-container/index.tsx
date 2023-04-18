@@ -7,6 +7,7 @@ import {
   INTRO_SCREEN,
   LOGIN_SCREEN,
   ORDER_SCREEN,
+  PERFORM_SCREEN,
   SPLASH_SCREEN,
 } from 'src/constants/navigate';
 import DashboardScreen from 'src/screens/dashboard';
@@ -16,6 +17,7 @@ import OrderScreen from 'src/screens/order';
 import CreateOrderScreen from 'src/screens/order/create-order.screen';
 import SplashScreen from 'src/screens/splash';
 import MyHeader from '../header';
+import PerformScreen from 'src/screens/perform';
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +49,11 @@ const MyNavigateContainer = () => {
           name={CREATE_ORDER_SCREEN}
           component={CreateOrderScreen}
           options={{ header: MyHeader, title: 'Gọi món' }}
+        />
+        <Stack.Screen
+          name={PERFORM_SCREEN}
+          component={PerformScreen}
+          options={{ header: MyHeader, title: 'Thực hiện' }}
         />
         <Stack.Screen
           name={SPLASH_SCREEN}

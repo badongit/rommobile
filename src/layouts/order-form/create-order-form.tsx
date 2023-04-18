@@ -5,7 +5,10 @@ import { FormProvider, UseFormReturn } from 'react-hook-form';
 import Button from 'src/components/Button';
 import InputControl from 'src/components/InputControl';
 import { OrderStatusColor, OrderStatusText } from 'src/constants/order';
-import { OrderStatusEnum } from 'src/constants/order/enums';
+import {
+  OrderDetailStatusEnum,
+  OrderStatusEnum,
+} from 'src/constants/order/enums';
 import useFloor from 'src/hooks/useFloor';
 import useSocket from 'src/hooks/useSocket';
 import { customerService } from 'src/services/customer.service';
@@ -31,7 +34,8 @@ const CreateOrderForm = (props: ICreateOrderForm) => {
     if (order) {
       let money = 0;
       order.details.forEach(detail => {
-        money = add(money, multiply(detail.price, detail.quantity));
+        if (detail.status !== OrderDetailStatusEnum.CANCEL)
+          money = add(money, multiply(detail.price, detail.quantity));
       });
 
       setTempPayment(money);

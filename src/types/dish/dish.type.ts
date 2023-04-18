@@ -9,3 +9,7 @@ export interface IDish {
   categoryId: number;
   descriptions: string;
 }
+
+export interface IDishMap {
+  [key: string | number]: IDish;
+}

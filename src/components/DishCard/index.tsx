@@ -1,4 +1,10 @@
+import { isNumber } from 'lodash';
 import { HStack, Image, Text, View } from 'native-base';
+import {
+  OrderDetailStatusColor,
+  OrderDetailStatusText,
+} from 'src/constants/order';
+import { OrderDetailStatusEnum } from 'src/constants/order/enums';
 import { formatToCurrency, getImage } from 'src/utils/common';
 
 export interface IDishCardProps {
@@ -8,11 +14,20 @@ export interface IDishCardProps {
   imageSize?: string;
   quantity?: number;
   topComponent?: JSX.Element;
+  status?: OrderDetailStatusEnum;
 }
 
 const DishCard = (props: any) => {
-  const { title, image, children, price, imageSize, quantity, topComponent } =
-    props;
+  const {
+    title,
+    image,
+    children,
+    price,
+    imageSize,
+    quantity,
+    topComponent,
+    status,
+  } = props;
   return (
     <View w="100%">
       {topComponent}
@@ -42,7 +57,7 @@ const DishCard = (props: any) => {
             isTruncated={true}>
             {title}
           </Text>
-          <HStack flex={1}>
+          <HStack>
             <Text color="dark.50" fontSize={13} flex={1.5}>
               {'Giá: ' + formatToCurrency(price)}
             </Text>
@@ -52,7 +67,17 @@ const DishCard = (props: any) => {
               </Text>
             )}
           </HStack>
-
+          {isNumber(status) && (
+            <Text>
+              Trạng thái:{' '}
+              <Text
+                fontWeight="semibold"
+                fontSize={16}
+                color={OrderDetailStatusColor[status]}>
+                {OrderDetailStatusText[status]}
+              </Text>
+            </Text>
+          )}
           {children}
         </View>
       </HStack>

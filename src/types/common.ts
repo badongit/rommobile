@@ -30,3 +30,7 @@ export interface IPaginationRequest {
 export interface IdParamsDto {
   id: number;
 }
+
+export interface IMap<T> {
+  [key: string | number]: T;
+}

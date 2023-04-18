@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { SocketEventEnum } from 'src/constants/enums';
 import SocketContext from 'src/contexts/SocketContext';
 import { IdParamsDto } from 'src/types/common';
+import { IChangeStatusOrderDetail } from 'src/types/order/change-status-order-detail.type';
 import { ICreateOrder } from 'src/types/order/create-order.type';
 import { IUpdateOrder } from 'src/types/order/update-order.type';
 
@@ -25,12 +26,17 @@ export const useSocket = () => {
     socket?.emit(SocketEventEnum.CANCEL_ORDER, payload);
   }
 
+  function changeStatusOrderDetail(payload: IChangeStatusOrderDetail) {
+    socket?.emit(SocketEventEnum.CHANGE_STATUS_ORDER_DETAIL, payload);
+  }
+
   return {
     ...contexts,
     createOrder,
     updateOrder,
     confirmOrder,
     cancelOrder,
+    changeStatusOrderDetail,
   };
 };
 

@@ -5,7 +5,7 @@ import { HOST } from 'src/constants/common';
 import { SocketEventEnum } from 'src/constants/enums';
 import useFloor from 'src/hooks/useFloor';
 import useOrder from 'src/hooks/useOrder';
-import { IOrder } from 'src/types/order/order.type';
+import { IOrder, IOrderDetail } from 'src/types/order/order.type';
 import { ITable } from 'src/types/table/table.type';
 
 export interface ISocketContext {
@@ -45,6 +45,10 @@ export const SocketProvider = (props: any) => {
 
     socket.on(SocketEventEnum.SEND_TABLE, (data: ITable) => {
       floorActions.getOneTable(data);
+    });
+
+    socket.on(SocketEventEnum.SEND_ORDER_DETAIL, (data: IOrderDetail) => {
+      orderActions.getOneDetail(data);
     });
 
     setSocket(socket);

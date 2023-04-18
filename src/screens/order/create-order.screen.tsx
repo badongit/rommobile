@@ -15,8 +15,13 @@ import { useForm } from 'react-hook-form';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Button from 'src/components/Button';
 import DishCard from 'src/components/DishCard';
-import { OrderStatusEnum, OrderTypeEnum } from 'src/constants/order/enums';
+import {
+  OrderDetailStatusEnum,
+  OrderStatusEnum,
+  OrderTypeEnum,
+} from 'src/constants/order/enums';
 import useCategory from 'src/hooks/useCategory';
 import useOrder from 'src/hooks/useOrder';
 import useSocket from 'src/hooks/useSocket';
@@ -42,7 +47,7 @@ const CreateOrderScreen = (props: any) => {
   const { tableId } = route.params;
   const { items: categories, dishMap } = useCategory();
   const { orderMapByTable } = useOrder();
-  const { createOrder, updateOrder } = useSocket();
+  const { createOrder, updateOrder, changeStatusOrderDetail } = useSocket();
   const [selectedScreen, setSelectedScreen] = useState<number>(0);
   const [tabs, setTabs] = useState<ITabViewItem[]>([]);
   const [carts, setCarts] = useState<ICart>({});
@@ -120,6 +125,13 @@ const CreateOrderScreen = (props: any) => {
       setCarts({});
     }
   };
+
+  function onChangeStatusOrderDetail(
+    id: number,
+    status: OrderDetailStatusEnum,
+  ) {
+    changeStatusOrderDetail({ id, status });
+  }
 
   const menuItems: IMenuCustomItemProps[] = [
     {
@@ -397,7 +409,26 @@ const CreateOrderScreen = (props: any) => {
                           price={dish.price}
                           topComponent={topComponent}
                           quantity={detail.quantity}
-                          imageSize={75}></DishCard>
+                          status={detail.status}
+                          imageSize={75}>
+                          {detail.status ===
+                            OrderDetailStatusEnum.WAIT_CONFIRM && (
+                            <HStack justifyContent="flex-end">
+                              <Button
+                                onPress={() =>
+                                  onChangeStatusOrderDetail(
+                                    detail.id,
+                                    OrderDetailStatusEnum.CANCEL,
+                                  )
+                                }
+                                title="Huỷ"
+                                py={1}
+                                flex={1 / 3}
+                                my={1.5}
+                              />
+                            </HStack>
+                          )}
+                        </DishCard>
                       );
                     },
                   )}

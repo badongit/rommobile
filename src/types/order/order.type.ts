@@ -30,3 +30,7 @@ export interface IOrder {
   customer: ICustomer;
   details: IOrderDetail[];
 }
+
+export interface IOrderMap {
+  [key: string | number]: IOrder;
+}

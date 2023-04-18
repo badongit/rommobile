@@ -20,7 +20,7 @@ export interface ITabViewProps {
 export interface ITabViewItem {
   title: string;
   image?: string;
-  element?: JSX.Element;
+  element: JSX.Element;
 }
 
 const TabView = (props: ITabViewProps) => {
