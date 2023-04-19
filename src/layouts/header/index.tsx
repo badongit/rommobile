@@ -22,16 +22,11 @@ const MyHeader = (props: any) => {
         {route.name === DASHBOARD_SCREEN ? (
           <Pressable
             onPress={() => {
-              actions: authActions.logout(() => {
-                navigation.navigate(LOGIN_SCREEN);
-                orderActions.reset();
-                categoryActions.reset();
-                floorActions.reset();
-              });
+              navigation.navigate(DASHBOARD_SCREEN);
             }}
             px="4"
             py="4">
-            <Icon color="light.50" size={6} as={<AntDesign name="logout" />} />
+            <Icon color="light.50" size={6} as={<AntDesign name="home" />} />
           </Pressable>
         ) : (
           <Pressable onPress={back ? navigation.goBack : null} px="4" py="4">
@@ -49,14 +44,30 @@ const MyHeader = (props: any) => {
         ) : (
           <Image source={logoImg} w="50px" h="50px" alt="logo" />
         )}
-        <Pressable
-          onPress={() => {
-            navigation.navigate(DASHBOARD_SCREEN);
-          }}
-          px="4"
-          py="4">
-          <Icon color="light.50" size={6} as={<AntDesign name="home" />} />
-        </Pressable>
+        {route.name === DASHBOARD_SCREEN ? (
+          <Pressable
+            onPress={() => {
+              authActions.logout(() => {
+                navigation.navigate(LOGIN_SCREEN);
+                orderActions.reset();
+                categoryActions.reset();
+                floorActions.reset();
+              });
+            }}
+            px="4"
+            py="4">
+            <Icon color="light.50" size={6} as={<AntDesign name="logout" />} />
+          </Pressable>
+        ) : (
+          <Pressable
+            onPress={() => {
+              navigation.navigate(DASHBOARD_SCREEN);
+            }}
+            px="4"
+            py="4">
+            <Icon color="light.50" size={6} as={<AntDesign name="home" />} />
+          </Pressable>
+        )}
       </HStack>
     </View>
   );

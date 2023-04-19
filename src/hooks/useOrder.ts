@@ -1,10 +1,11 @@
-import { keyBy } from 'lodash';
+import { keyBy, orderBy } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import orderActions from 'src/redux/order/actions';
 import { IOrder, IOrderDetail } from 'src/types/order/order.type';
 import { IMap } from 'src/types/common';
+import { OrderStatusEnum } from 'src/constants/order/enums';
 
 export default function useOrder() {
   const isLoading: boolean = useSelector((state: any) => state.order.isLoading);
@@ -21,7 +22,7 @@ export default function useOrder() {
       state.push(...order.details);
     }
 
-    return state;
+    return orderBy(state, ['createdAt'], ['asc']);
   });
   const dispatch = useDispatch();
 
@@ -31,9 +32,10 @@ export default function useOrder() {
 
     const newOrderDetails: IOrderDetail[] = [];
     for (const order of Object.values(orderMap)) {
-      newOrderDetails.push(...order.details);
+      if (order.status !== OrderStatusEnum.WAIT_CONFIRM)
+        newOrderDetails.push(...order.details);
     }
-    setOrderDetails(newOrderDetails);
+    setOrderDetails(orderBy(newOrderDetails, ['createdAt'], ['asc']));
   }, [orderMap]);
 
   const actions = useMemo(

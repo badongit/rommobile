@@ -15,6 +15,8 @@ export interface IDishCardProps {
   quantity?: number;
   topComponent?: JSX.Element;
   status?: OrderDetailStatusEnum;
+  tableCode?: string;
+  waitingTicket?: string;
 }
 
 const DishCard = (props: any) => {
@@ -27,6 +29,8 @@ const DishCard = (props: any) => {
     quantity,
     topComponent,
     status,
+    tableCode,
+    waitingTicket,
   } = props;
   return (
     <View w="100%">
@@ -58,9 +62,11 @@ const DishCard = (props: any) => {
             {title}
           </Text>
           <HStack>
-            <Text color="dark.50" fontSize={13} flex={1.5}>
-              {'Giá: ' + formatToCurrency(price)}
-            </Text>
+            {!!price && (
+              <Text color="dark.50" fontSize={13} flex={1.5}>
+                {'Giá: ' + formatToCurrency(price)}
+              </Text>
+            )}
             {!!quantity && (
               <Text color="dark.50" fontSize={13} flex={1}>
                 {'Số lượng: ' + quantity}
@@ -76,6 +82,16 @@ const DishCard = (props: any) => {
                 color={OrderDetailStatusColor[status]}>
                 {OrderDetailStatusText[status]}
               </Text>
+            </Text>
+          )}
+          {tableCode && (
+            <Text>
+              Bàn: <Text fontWeight="semibold">{tableCode}</Text>
+            </Text>
+          )}
+          {waitingTicket && (
+            <Text>
+              Phiếu: <Text fontWeight="semibold">{waitingTicket}</Text>
             </Text>
           )}
           {children}

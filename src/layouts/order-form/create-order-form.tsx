@@ -31,7 +31,7 @@ const CreateOrderForm = (props: ICreateOrderForm) => {
   const { confirmOrder, cancelOrder } = useSocket();
 
   useEffect(() => {
-    if (order) {
+    if (order?.details) {
       let money = 0;
       order.details.forEach(detail => {
         if (detail.status !== OrderDetailStatusEnum.CANCEL)
@@ -40,7 +40,7 @@ const CreateOrderForm = (props: ICreateOrderForm) => {
 
       setTempPayment(money);
     }
-  }, [order]);
+  }, [order?.details]);
 
   useEffect(() => {
     const timerId = setTimeout(async () => {
