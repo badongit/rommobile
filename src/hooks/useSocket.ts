@@ -3,6 +3,7 @@ import { SocketEventEnum } from 'src/constants/enums';
 import SocketContext from 'src/contexts/SocketContext';
 import { IdParamsDto } from 'src/types/common';
 import { IChangeStatusOrderDetail } from 'src/types/order/change-status-order-detail.type';
+import { ICompleteOrder } from 'src/types/order/complete-order.type';
 import { ICreateOrder } from 'src/types/order/create-order.type';
 import { IUpdateOrder } from 'src/types/order/update-order.type';
 
@@ -30,6 +31,10 @@ export const useSocket = () => {
     socket?.emit(SocketEventEnum.CHANGE_STATUS_ORDER_DETAIL, payload);
   }
 
+  function completeOrder(payload: ICompleteOrder) {
+    socket?.emit(SocketEventEnum.COMPLETE_ORDER, payload);
+  }
+
   return {
     ...contexts,
     createOrder,
@@ -37,6 +42,7 @@ export const useSocket = () => {
     confirmOrder,
     cancelOrder,
     changeStatusOrderDetail,
+    completeOrder,
   };
 };
 

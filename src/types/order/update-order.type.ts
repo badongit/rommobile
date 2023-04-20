@@ -1,5 +1,3 @@
-import { OrderStatusEnum, OrderTypeEnum } from 'src/constants/order/enums';
-
 export interface IUpdateOrder {
   id: number;
   note?: string;

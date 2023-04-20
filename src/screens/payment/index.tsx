@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { CREATE_ORDER_SCREEN } from 'src/constants/navigate';
+import { COMPLETE_ORDER_SCREEN } from 'src/constants/navigate';
+import { OrderStatusEnum } from 'src/constants/order/enums';
 import { TableStatusEnum } from 'src/constants/table/enums';
 import useFloor from 'src/hooks/useFloor';
 import TabTables from 'src/layouts/tab-tables';
 import TabView, { ITabViewItem } from 'src/layouts/tab-view';
 import { ITable } from 'src/types/table/table.type';
 
-const OrderScreen = (props: any) => {
+const PaymentScreen = (props: any) => {
   const { navigation } = props;
   const { items: floors } = useFloor();
   // const firstTab = {
@@ -27,8 +28,15 @@ const OrderScreen = (props: any) => {
             key={floor.id}
             navigation={navigation}
             onPressTable={(table: ITable) => {
-              if (table.status !== TableStatusEnum.OFF)
-                navigation.navigate(CREATE_ORDER_SCREEN, { tableId: table.id });
+              if (
+                ![TableStatusEnum.OFF, TableStatusEnum.EMPTY].includes(
+                  table.status,
+                )
+              ) {
+                navigation.navigate(COMPLETE_ORDER_SCREEN, {
+                  tableId: table.id,
+                });
+              }
             }}
           />
         ),
@@ -43,4 +51,4 @@ const OrderScreen = (props: any) => {
   );
 };
 
-export default OrderScreen;
+export default PaymentScreen;

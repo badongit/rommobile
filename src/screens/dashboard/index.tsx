@@ -7,6 +7,7 @@ import MenuCard, { IMenuCardProps } from 'src/components/MenuCard';
 import {
   INTRO_SCREEN,
   ORDER_SCREEN,
+  PAYMENT_SCREEN,
   PERFORM_SCREEN,
 } from 'src/constants/navigate';
 
@@ -33,7 +34,7 @@ const DashboardScreen = (props: any) => {
       backgroundIcon: 'green.600',
       IconElement: <AntDesign name="creditcard" />,
       onPress: () => {
-        navigation.navigate(INTRO_SCREEN);
+        navigation.navigate(PAYMENT_SCREEN);
       },
       title: 'Thanh toán',
     },
