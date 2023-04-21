@@ -1,5 +1,5 @@
 import { add, multiply } from 'lodash';
-import { HStack, Text, VStack, View } from 'native-base';
+import { HStack, Text, VStack, View, Radio } from 'native-base';
 import { useEffect, useState } from 'react';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 import Button from 'src/components/Button';
@@ -8,6 +8,7 @@ import { OrderStatusColor, OrderStatusText } from 'src/constants/order';
 import {
   OrderDetailStatusEnum,
   OrderStatusEnum,
+  PaymentMethodEnum,
 } from 'src/constants/order/enums';
 import useFloor from 'src/hooks/useFloor';
 import useSocket from 'src/hooks/useSocket';
@@ -16,21 +17,32 @@ import { ICustomer } from 'src/types/customer/customer.type';
 import { ICompleteOrder } from 'src/types/order/complete-order.type';
 import { ICreateOrder } from 'src/types/order/create-order.type';
 import { IOrder } from 'src/types/order/order.type';
-import { formatToCurrency } from 'src/utils/common';
+import { asPoint, discountAmount, formatToCurrency } from 'src/utils/common';
 
 export interface ICompleteOrderForm {
   methods: UseFormReturn<ICompleteOrder>;
   order: IOrder;
   tableId?: string | number;
   waitingTicket?: string;
-  onSubmit: any;
+  onComplete: any;
+  isSubmitting: boolean;
+  onConfirm: any;
+  onCancel: any;
 }
 const PaymentOrderForm = (props: ICompleteOrderForm) => {
-  const { methods, order, tableId, waitingTicket, onSubmit } = props;
+  const {
+    methods,
+    order,
+    tableId,
+    waitingTicket,
+    onComplete,
+    isSubmitting,
+    onConfirm,
+    onCancel,
+  } = props;
   const { watch, getFieldState, setValue } = methods;
   const { tableMap } = useFloor();
   const [tempPayment, setTempPayment] = useState(0);
-  const { confirmOrder, cancelOrder } = useSocket();
   const [customer, setCustomer] = useState<ICustomer>();
 
   useEffect(() => {
@@ -70,7 +82,7 @@ const PaymentOrderForm = (props: ICompleteOrderForm) => {
   return (
     <View backgroundColor="white" borderRadius="lg" p={4}>
       <FormProvider {...methods}>
-        <VStack w="full" space={2}>
+        <VStack w="full" space={3}>
           <Text>
             Mã HĐ: <Text fontWeight="semibold">{order.code}</Text>
           </Text>
@@ -136,9 +148,27 @@ const PaymentOrderForm = (props: ICompleteOrderForm) => {
               <InputControl
                 name="pointUsed"
                 size="md"
+                keyboardType="number-pad"
                 variant="underlined"
                 px={2}
                 py={0}
+                rules={{
+                  validate: (value: string) => {
+                    if (parseInt(value) > (customer?.point ?? 0))
+                      return 'Không đủ điểm';
+                    if (parseInt(value) > asPoint(tempPayment))
+                      return 'Vượt quá giá trị đơn hàng';
+                  },
+                }}
+                onChangeText={(value: string) => {
+                  if (typeof value === 'string' && !Number.isInteger(+value)) {
+                    return false;
+                  }
+
+                  setValue('pointUsed', (+value).toString(), {
+                    shouldValidate: true,
+                  });
+                }}
               />
             </View>
             <Text>Hiện có: {customer?.point ?? 0} điểm</Text>
@@ -156,40 +186,67 @@ const PaymentOrderForm = (props: ICompleteOrderForm) => {
               />
             </View>
           </HStack>
+          <HStack alignItems="center">
+            <Text>PTTT: </Text>
+            <Radio.Group
+              name="paymentMethod"
+              defaultValue={methods.getValues('paymentMethod').toString()}>
+              <HStack ml="4" space={4}>
+                <Radio
+                  size="sm"
+                  colorScheme="red"
+                  value={PaymentMethodEnum.CASH.toString()}>
+                  Tiền mặt
+                </Radio>
+                <Radio
+                  size="sm"
+                  colorScheme="red"
+                  value={PaymentMethodEnum.BANK_TRANSFER.toString()}>
+                  Chuyển khoản
+                </Radio>
+              </HStack>
+            </Radio.Group>
+          </HStack>
           <Text>
-            Tạm tính:{' '}
+            Thành tiền:{' '}
             <Text fontWeight="semibold">{formatToCurrency(tempPayment)}</Text>
           </Text>
+          <Text>
+            Thanh toán:{' '}
+            <Text fontWeight="semibold">
+              {formatToCurrency(
+                discountAmount(tempPayment, +methods.getValues('pointUsed')),
+              )}
+            </Text>
+          </Text>
           <HStack justifyContent="flex-end" space={2}>
+            {order?.status === OrderStatusEnum.IN_PROGRESS && (
+              <Button
+                px="4"
+                disabled={isSubmitting}
+                title="Thanh toán"
+                onPress={methods.handleSubmit(onComplete)}
+                flex={1 / 3}
+              />
+            )}
             {order?.status === OrderStatusEnum.WAIT_CONFIRM && (
               <Button
                 px="4"
+                disabled={isSubmitting}
                 title="Xác nhận"
-                disabled={!order}
-                onPress={() => confirmOrder({ id: order.id })}
+                onPress={onConfirm}
                 flex={1 / 3}
               />
             )}
             {order?.status === OrderStatusEnum.WAIT_CONFIRM && (
               <Button
                 px="4"
+                disabled={isSubmitting}
                 title="Hủy"
-                disabled={!order}
-                onPress={() => cancelOrder({ id: order.id })}
+                onPress={onCancel}
                 flex={1 / 3}
               />
             )}
-            <Button
-              px="4"
-              title="Lưu"
-              disabled={
-                !order ||
-                methods.getValues('customerPhoneNumber') === '' ||
-                !methods.formState.isValid
-              }
-              onPress={methods.handleSubmit(onSubmit)}
-              flex={1 / 3}
-            />
           </HStack>
         </VStack>
       </FormProvider>

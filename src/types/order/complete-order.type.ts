@@ -6,6 +6,6 @@ export interface ICompleteOrder {
   customerPhoneNumber: string;
   customerName: string;
   paymentMethod: PaymentMethodEnum;
-  pointUsed: number;
+  pointUsed: string;
   cashierId: number;
 }

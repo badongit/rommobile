@@ -1,8 +1,11 @@
-import { HStack, ScrollView, Text, VStack, View } from 'native-base';
+import { HStack, ScrollView, Text, View, VStack } from 'native-base';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Button from 'src/components/Button';
 import DishCard from 'src/components/DishCard';
+import { SocketEventEnum } from 'src/constants/enums';
+import { PAYMENT_SCREEN } from 'src/constants/navigate';
 import {
   OrderDetailStatusEnum,
   PaymentMethodEnum,
@@ -17,30 +20,36 @@ import { IOrderDetail } from 'src/types/order/order.type';
 import { formatToDate } from 'src/utils/common';
 
 const CompleteOrderScreen = (props: any) => {
-  const { route } = props;
+  const { route, navigation } = props;
   const { tableId } = route.params;
   const { dishMap } = useCategory();
-  const { changeStatusOrderDetail } = useSocket();
+  const {
+    changeStatusOrderDetail,
+    completeOrder,
+    socket,
+    confirmOrder,
+    cancelOrder,
+  } = useSocket();
   const { orderMapByTable } = useOrder();
   const order = orderMapByTable[tableId];
   const { userInfo } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
   const { ...methods } = useForm<ICompleteOrder>({
     mode: 'onChange',
     defaultValues: {
+      id: order.id,
       customerPhoneNumber: order?.customer?.phoneNumber || '',
       customerName: order?.customer?.name || '',
       note: order?.note || '',
       paymentMethod: PaymentMethodEnum.CASH,
-      pointUsed: 0,
+      pointUsed: '0',
       cashierId: userInfo.id,
     },
   });
 
-  function onCompleteOrder(data: any) {
-    console.log(
-      '🚀 ~ file: complete-order.screen.tsx:29 ~ onCompleteOrder ~ data:',
-      data,
-    );
+  function onCompleteOrder() {
+    setIsLoading(true);
+    completeOrder(methods.getValues());
   }
 
   function onChangeStatusOrderDetail(
@@ -50,6 +59,35 @@ const CompleteOrderScreen = (props: any) => {
     changeStatusOrderDetail({ id, status });
   }
 
+  function onConfirmOrder() {
+    setIsLoading(true);
+    confirmOrder({ id: order.id });
+  }
+
+  function onCancelOrder() {
+    setIsLoading(true);
+    cancelOrder({ id: order.id });
+  }
+
+  useEffect(() => {
+    const navigateScreen = (data: any) => {
+      setIsLoading(false);
+      if (data.navigate) {
+        navigation.navigate(data.navigate);
+      }
+    };
+    const handleError = () => {
+      setIsLoading(false);
+    };
+    socket?.on(SocketEventEnum.NOTIFICATION, navigateScreen);
+    socket?.on(SocketEventEnum.ERROR, handleError);
+
+    return () => {
+      socket?.off(SocketEventEnum.NOTIFICATION, navigateScreen);
+      socket?.off(SocketEventEnum.ERROR, handleError);
+    };
+  }, [navigation, socket]);
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -58,7 +96,10 @@ const CompleteOrderScreen = (props: any) => {
             methods={methods}
             order={order}
             tableId={tableId}
-            onSubmit={onCompleteOrder}
+            isSubmitting={isLoading}
+            onComplete={onCompleteOrder}
+            onConfirm={onConfirmOrder}
+            onCancel={onCancelOrder}
           />
         </View>
         {order && (

@@ -17,6 +17,8 @@ import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Button from 'src/components/Button';
 import DishCard from 'src/components/DishCard';
+import { SocketEventEnum } from 'src/constants/enums';
+import { CREATE_ORDER_SCREEN_1 } from 'src/constants/navigate';
 import {
   OrderDetailStatusEnum,
   OrderStatusEnum,
@@ -43,11 +45,12 @@ export interface ICart {
   [key: string]: number;
 }
 const CreateOrderScreen = (props: any) => {
-  const { route } = props;
+  const { route, navigation } = props;
   const { tableId } = route.params;
   const { items: categories, dishMap } = useCategory();
   const { orderMapByTable } = useOrder();
-  const { createOrder, updateOrder, changeStatusOrderDetail } = useSocket();
+  const { createOrder, updateOrder, changeStatusOrderDetail, socket } =
+    useSocket();
   const [selectedScreen, setSelectedScreen] = useState<number>(0);
   const [tabs, setTabs] = useState<ITabViewItem[]>([]);
   const [carts, setCarts] = useState<ICart>({});
@@ -218,6 +221,20 @@ const CreateOrderScreen = (props: any) => {
       })),
     ]);
   }, [categories, carts]);
+
+  useEffect(() => {
+    const navigateScreen = (data: any) => {
+      if (data.navigate === CREATE_ORDER_SCREEN_1) {
+        setSelectedScreen(1);
+      }
+    };
+
+    socket?.on(SocketEventEnum.NOTIFICATION, navigateScreen);
+
+    return () => {
+      socket?.off(SocketEventEnum.NOTIFICATION, navigateScreen);
+    };
+  }, [navigation, socket]);
 
   return (
     <View flex={1}>
