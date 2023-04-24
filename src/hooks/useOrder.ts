@@ -13,7 +13,12 @@ export default function useOrder() {
     (state: any) => state.order.itemMap,
   );
   const [orderMapByTable, setOrderMapByTable] = useState<IMap<IOrder>>(() => {
-    return keyBy(Object.values(orderMap), 'tableId');
+    const state: IMap<IOrder> = {};
+
+    for (const order of Object.values(orderMap)) {
+      state[order.tableId ?? order.waitingTicket] = order;
+    }
+    return state;
   });
   const [orderDetails, setOrderDetails] = useState(() => {
     const state: IOrderDetail[] = [];
@@ -27,7 +32,12 @@ export default function useOrder() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const mapByTable: IMap<IOrder> = keyBy(Object.values(orderMap), 'tableId');
+    const mapByTable: IMap<IOrder> = {};
+
+    for (const order of Object.values(orderMap)) {
+      mapByTable[order.tableId ?? order.waitingTicket] = order;
+    }
+
     setOrderMapByTable(mapByTable);
 
     const newOrderDetails: IOrderDetail[] = [];

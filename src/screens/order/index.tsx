@@ -5,20 +5,31 @@ import { TableStatusEnum } from 'src/constants/table/enums';
 import useFloor from 'src/hooks/useFloor';
 import TabTables from 'src/layouts/tab-tables';
 import TabView, { ITabViewItem } from 'src/layouts/tab-view';
+import TabWaitTicket from 'src/layouts/tab-wait-ticket';
 import { ITable } from 'src/types/table/table.type';
 
 const OrderScreen = (props: any) => {
   const { navigation } = props;
   const { items: floors } = useFloor();
-  // const firstTab = {
-  //   title: 'Mang về',
-  //   element: <TabTables tables={items[0].tables} key={0} />,
-  // };
+  const firstTab = {
+    title: 'Mang về',
+    element: (
+      <TabWaitTicket
+        key={0}
+        navigation={navigation}
+        onPressItem={(waitingTicket: string) => {
+          navigation.navigate(CREATE_ORDER_SCREEN, {
+            waitingTicket,
+          });
+        }}
+      />
+    ),
+  };
   const [tabs, setTabs] = useState<ITabViewItem[]>([]);
 
   useEffect(() => {
     setTabs([
-      // firstTab,
+      firstTab,
       ...floors.map(floor => ({
         title: floor.name,
         element: (

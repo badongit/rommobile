@@ -21,7 +21,7 @@ import { formatToDate } from 'src/utils/common';
 
 const CompleteOrderScreen = (props: any) => {
   const { route, navigation } = props;
-  const { tableId } = route.params;
+  const { tableId, waitingTicket } = route.params;
   const { dishMap } = useCategory();
   const {
     changeStatusOrderDetail,
@@ -31,7 +31,7 @@ const CompleteOrderScreen = (props: any) => {
     cancelOrder,
   } = useSocket();
   const { orderMapByTable } = useOrder();
-  const order = orderMapByTable[tableId];
+  const order = orderMapByTable[tableId ?? waitingTicket];
   const { userInfo } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const { ...methods } = useForm<ICompleteOrder>({

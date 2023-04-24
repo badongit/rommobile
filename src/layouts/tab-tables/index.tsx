@@ -1,11 +1,9 @@
-import { HStack, ScrollView, VStack, View, Box, Text, Icon } from 'native-base';
+import { Box, HStack, Icon, ScrollView, Text, VStack, View } from 'native-base';
 import { useEffect, useState } from 'react';
-import InfoCard, { IInfoCardProps } from 'src/components/InfoCard';
-import { ITable } from 'src/types/table/table.type';
 import Feather from 'react-native-vector-icons/Feather';
+import InfoCard, { IInfoCardProps } from 'src/components/InfoCard';
 import { TableStateColorMap } from 'src/constants/table';
-import { CREATE_ORDER_SCREEN } from 'src/constants/navigate';
-import { TableStatusEnum } from 'src/constants/table/enums';
+import { ITable } from 'src/types/table/table.type';
 
 interface ITabTablesProps {
   tables: ITable[];

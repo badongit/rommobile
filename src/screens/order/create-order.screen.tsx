@@ -46,7 +46,7 @@ export interface ICart {
 }
 const CreateOrderScreen = (props: any) => {
   const { route, navigation } = props;
-  const { tableId } = route.params;
+  const { tableId, waitingTicket } = route.params;
   const { items: categories, dishMap } = useCategory();
   const { orderMapByTable } = useOrder();
   const { createOrder, updateOrder, changeStatusOrderDetail, socket } =
@@ -55,7 +55,7 @@ const CreateOrderScreen = (props: any) => {
   const [tabs, setTabs] = useState<ITabViewItem[]>([]);
   const [carts, setCarts] = useState<ICart>({});
   const [isConfirm, setIsConfirm] = useState(true);
-  const order = orderMapByTable[tableId];
+  const order = orderMapByTable[tableId ?? waitingTicket];
   const { ...methods } = useForm<ICreateOrder>({
     mode: 'onChange',
     defaultValues: {
@@ -99,7 +99,7 @@ const CreateOrderScreen = (props: any) => {
     }
 
     if (!isEmpty(details)) {
-      createOrder({ type, status, tableId, details });
+      createOrder({ type, status, tableId, details, waitingTicket });
       setCarts({});
     }
   };
@@ -195,7 +195,7 @@ const CreateOrderScreen = (props: any) => {
   function renderTabElement(dishes: IDish[]): JSX.Element {
     return (
       <ScrollView>
-        <VStack px={3} space={4} alignItems="flex-end">
+        <VStack px={3} py={3} space={4} alignItems="flex-end">
           {dishes.map(dish => {
             return (
               <DishCard
@@ -281,7 +281,7 @@ const CreateOrderScreen = (props: any) => {
                     )}
                   </Center>
                 </Pressable>
-                {!order && (
+                {!order && !waitingTicket && (
                   <Pressable
                     flexBasis="40%"
                     py={4}
@@ -309,7 +309,9 @@ const CreateOrderScreen = (props: any) => {
                       ? () => onUpdateOrder()
                       : () =>
                           onCreateOrder(
-                            OrderTypeEnum.IN_HERE,
+                            waitingTicket
+                              ? OrderTypeEnum.BRING_BACK
+                              : OrderTypeEnum.IN_HERE,
                             OrderStatusEnum.IN_PROGRESS,
                           )
                   }>
@@ -402,6 +404,7 @@ const CreateOrderScreen = (props: any) => {
               methods={methods}
               order={order}
               tableId={tableId}
+              waitingTicket={waitingTicket}
               onSubmit={onUpdateOrder}
             />
           </View>
