@@ -141,6 +141,8 @@ const TabWaitTicket = (props: ITabWaitTicketProps) => {
                 <Button
                   title="Tạo"
                   onPress={() => {
+                    setIsShowModal(false);
+                    setTicket('');
                     navigation.navigate(CREATE_ORDER_SCREEN, {
                       waitingTicket: ticket,
                     });
