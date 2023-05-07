@@ -33,7 +33,8 @@ const PerformScreen = (props: any) => {
         <VStack space={4} p={4} flex={1}>
           {details.map(detail => {
             const dish = dishMap[detail.dishId];
-            const tableCode = tableMap[orderMap[detail.orderId].tableId].code;
+            const tableCode = tableMap[orderMap[detail.orderId]?.tableId]?.code;
+            const waitingTicket = orderMap[detail.orderId]?.waitingTicket;
 
             return (
               <DishCard
@@ -42,6 +43,7 @@ const PerformScreen = (props: any) => {
                 image={dish.image}
                 quantity={detail.quantity}
                 imageSize={75}
+                waitingTicket={waitingTicket}
                 tableCode={tableCode}>
                 <HStack justifyContent="flex-end" space={4} mt="2">
                   {detail.status === OrderDetailStatusEnum.WAIT_CONFIRM && (
