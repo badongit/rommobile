@@ -1,4 +1,4 @@
-package com.rommobile;
+package com.app.rommobile;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

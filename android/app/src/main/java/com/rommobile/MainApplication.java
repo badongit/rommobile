@@ -1,4 +1,4 @@
-package com.rommobile;
+package com.app.rommobile;
 
 import android.app.Application;
 import com.facebook.react.PackageList;
