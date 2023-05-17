@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COMPLETE_ORDER_SCREEN } from 'src/constants/navigate';
-import { OrderStatusEnum } from 'src/constants/order/enums';
 import { TableStatusEnum } from 'src/constants/table/enums';
 import useFloor from 'src/hooks/useFloor';
 import TabTables from 'src/layouts/tab-tables';

@@ -10,6 +10,7 @@ import {
   ORDER_SCREEN,
   PAYMENT_SCREEN,
   PERFORM_SCREEN,
+  PROFILE_SCREEN,
   SPLASH_SCREEN,
 } from 'src/constants/navigate';
 import DashboardScreen from 'src/screens/dashboard';
@@ -22,6 +23,7 @@ import MyHeader from '../header';
 import PerformScreen from 'src/screens/perform';
 import PaymentScreen from 'src/screens/payment';
 import CompleteOrderScreen from 'src/screens/payment/complete-order.screen';
+import ProfileScreen from 'src/screens/profile';
 
 const Stack = createNativeStackNavigator();
 
@@ -73,6 +75,11 @@ const MyNavigateContainer = () => {
           name={SPLASH_SCREEN}
           component={SplashScreen}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={PROFILE_SCREEN}
+          component={ProfileScreen}
+          options={{ header: MyHeader, title: 'Cài đặt' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

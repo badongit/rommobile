@@ -1,3 +1,4 @@
+import { IUpdatePassword } from 'src/types/employee/update-password.type';
 import { ILoginForm } from '../types/auth/login-form.type';
 import { IRefreshTokenForm } from '../types/auth/refresh-token-form.type';
 import api from './api';
@@ -15,5 +16,9 @@ export const authService = {
   getMe: () => {
     const url = URL_PREFIX + '/me';
     return api.get(url);
+  },
+  changePassword: (body: IUpdatePassword) => {
+    const url = URL_PREFIX + '/password';
+    return api.put(url, body);
   },
 };

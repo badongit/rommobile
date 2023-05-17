@@ -67,7 +67,7 @@ export const createInstance = (baseURL: string) => {
       } else if (response?.status === 401) {
         await startLogout();
       } else {
-        return Promise.reject(error);
+        return error.response.data;
       }
     },
   );
