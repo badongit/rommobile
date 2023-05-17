@@ -11,11 +11,9 @@ import {
   PaymentMethodEnum,
 } from 'src/constants/order/enums';
 import useFloor from 'src/hooks/useFloor';
-import useSocket from 'src/hooks/useSocket';
 import { customerService } from 'src/services/customer.service';
 import { ICustomer } from 'src/types/customer/customer.type';
 import { ICompleteOrder } from 'src/types/order/complete-order.type';
-import { ICreateOrder } from 'src/types/order/create-order.type';
 import { IOrder } from 'src/types/order/order.type';
 import { asPoint, discountAmount, formatToCurrency } from 'src/utils/common';
 
@@ -48,7 +46,7 @@ const PaymentOrderForm = (props: ICompleteOrderForm) => {
   useEffect(() => {
     if (order?.details) {
       let money = 0;
-      order.details.forEach(detail => {
+      order?.details.forEach((detail: any) => {
         if (
           [
             OrderDetailStatusEnum.IN_PROGRESS,
@@ -84,12 +82,12 @@ const PaymentOrderForm = (props: ICompleteOrderForm) => {
       <FormProvider {...methods}>
         <VStack w="full" space={3}>
           <Text>
-            Mã HĐ: <Text fontWeight="semibold">{order.code}</Text>
+            Mã HĐ: <Text fontWeight="semibold">{order?.code}</Text>
           </Text>
           <Text>
             Trạng thái:{' '}
-            <Text fontWeight="semibold" color={OrderStatusColor[order.status]}>
-              {OrderStatusText[order.status]}
+            <Text fontWeight="semibold" color={OrderStatusColor[order?.status]}>
+              {OrderStatusText[order?.status]}
             </Text>
           </Text>
           {!!tableId && (

@@ -37,13 +37,13 @@ const CompleteOrderScreen = (props: any) => {
   const { ...methods } = useForm<ICompleteOrder>({
     mode: 'onChange',
     defaultValues: {
-      id: order.id,
+      id: order?.id,
       customerPhoneNumber: order?.customer?.phoneNumber || '',
       customerName: order?.customer?.name || '',
       note: order?.note || '',
       paymentMethod: PaymentMethodEnum.CASH,
       pointUsed: '0',
-      cashierId: userInfo.id,
+      cashierId: userInfo?.id,
     },
   });
 
@@ -61,12 +61,12 @@ const CompleteOrderScreen = (props: any) => {
 
   function onConfirmOrder() {
     setIsLoading(true);
-    confirmOrder({ id: order.id });
+    confirmOrder({ id: order?.id });
   }
 
   function onCancelOrder() {
     setIsLoading(true);
-    cancelOrder({ id: order.id });
+    cancelOrder({ id: order?.id });
   }
 
   useEffect(() => {
@@ -88,6 +88,12 @@ const CompleteOrderScreen = (props: any) => {
     };
   }, [navigation, socket]);
 
+  useEffect(() => {
+    if (!order) {
+      navigation.navigate(PAYMENT_SCREEN);
+    }
+  }, [order]);
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -106,7 +112,7 @@ const CompleteOrderScreen = (props: any) => {
           <View p={4}>
             <View backgroundColor="white" borderRadius="lg" p={4}>
               <VStack space={4}>
-                {order.details.map(
+                {order?.details.map(
                   (detail, index: number, details: IOrderDetail[]) => {
                     const dish = dishMap[detail.dishId];
                     const topComponent =

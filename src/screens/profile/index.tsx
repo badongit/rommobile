@@ -177,7 +177,7 @@ const ProfileScreen = (props: any) => {
         </FormProvider>
       </View>
 
-      <View backgroundColor="white" borderRadius="lg" p={4}>
+      <View backgroundColor="white" borderRadius="lg" p={4} mt={4}>
         <FormProvider {...methodsPass}>
           <VStack w="full" space={2}>
             <HStack alignItems="center">
