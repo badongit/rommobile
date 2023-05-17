@@ -1,6 +1,8 @@
 import { ILoginForm } from 'src/types/auth/login-form.type';
 import { ILoginResponse } from 'src/types/auth/login-response.type';
 import { IDetailEmployee } from 'src/types/employee/detail-employee.type';
+import { IUpdatePassword } from 'src/types/employee/update-password.type';
+import { IUpdateEmployee } from 'src/types/employee/update-profile.type';
 
 export const LOGIN_START = 'LOGIN_START';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -12,6 +14,14 @@ export const LOGOUT_FAILED = 'LOGOUT_FAILED';
 export const GET_ME_START = 'GET_ME_START';
 export const GET_ME_SUCCESS = 'GET_ME_SUCCESS';
 export const GET_ME_FAILED = 'GET_ME_FAILED';
+
+export const UPDATE_ME_START = 'UPDATE_ME_START';
+export const UPDATE_ME_SUCCESS = 'UPDATE_ME_SUCCESS';
+export const UPDATE_ME_FAILED = 'UPDATE_ME_FAILED';
+
+export const UPDATE_PASSWORD_START = 'UPDATE_PASSWORD_START';
+export const UPDATE_PASSWORD_SUCCESS = 'UPDATE_PASSWORD_SUCCESS';
+export const UPDATE_PASSWORD_FAILED = 'UPDATE_PASSWORD_FAILED';
 
 export function login(
   payload: ILoginForm,
@@ -72,6 +82,32 @@ export function getMeFailed() {
   return { type: GET_ME_FAILED };
 }
 
+export function updateMe(
+  payload: IUpdateEmployee,
+  onSuccess?: Function | null,
+  onError?: Function | null,
+) {
+  return {
+    type: UPDATE_ME_START,
+    payload: payload,
+    onSuccess,
+    onError,
+  };
+}
+
+export function updatePassword(
+  payload: IUpdatePassword,
+  onSuccess?: Function | null,
+  onError?: Function | null,
+) {
+  return {
+    type: UPDATE_PASSWORD_START,
+    payload: payload,
+    onSuccess,
+    onError,
+  };
+}
+
 const authActions = {
   login,
   loginSuccess,
@@ -82,5 +118,7 @@ const authActions = {
   getMe,
   getMeSuccess,
   getMeFailed,
+  updateMe,
+  updatePassword,
 };
 export default authActions;

@@ -9,6 +9,7 @@ import {
   ORDER_SCREEN,
   PAYMENT_SCREEN,
   PERFORM_SCREEN,
+  PROFILE_SCREEN,
 } from 'src/constants/navigate';
 
 const DashboardScreen = (props: any) => {
@@ -42,7 +43,7 @@ const DashboardScreen = (props: any) => {
       backgroundIcon: 'coolGray.600',
       IconElement: <Ionicons name="md-settings-outline" />,
       onPress: () => {
-        navigation.navigate(INTRO_SCREEN);
+        navigation.navigate(PROFILE_SCREEN);
       },
       title: 'Cài đặt',
     },
